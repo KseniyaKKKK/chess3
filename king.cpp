@@ -10,3 +10,5 @@ King::King(int x, int y, bool color) : ChessPiece(x, y)
         this->setPixmap(QPixmap::fromImage(*blackImage).scaled(90,90));
     }
 }
+
+//Мы лучшие!!!
