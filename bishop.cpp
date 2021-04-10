@@ -10,3 +10,11 @@ Bishop::Bishop(int x, int y, bool color) : ChessPiece(x, y)
         this->setPixmap(QPixmap::fromImage(*blackImage).scaled(90,90));
     }
 }
+
+bool Bishop::figureCanMove(const Cell *start, const Cell *end)
+{
+    if (abs(start->column - end->column) == abs(start->row - end->row)) {
+        return true;
+    }
+    return false;
+}
