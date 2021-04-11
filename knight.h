@@ -8,6 +8,7 @@ public:
     Knight(int x, int y, bool color);
     QImage *whiteImage = new QImage(":/images/knight-white.png");
     QImage *blackImage = new QImage(":/images/knight-black.png");
+     virtual bool figureCanMove(const Cell * start, const Cell * end)override;
     bool color;
 };
 
