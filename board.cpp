@@ -66,7 +66,7 @@ void Board::drawCells()
     }
 }
 
-//здесть надо добавить все фигурки, пока что она одна
+
 void Board::addFigures()
 {
     for (int i = 0; i < 8; ++i) {
@@ -77,7 +77,7 @@ void Board::addFigures()
         cellsToPieces[&cells[i][1]] = new Pawn(cells[i][1].x(), cells[i][1].y(), false);
         this->addItem(cellsToPieces.value(&cells[i][1]));
     }
-    //КРИНЧИК_САМОДЕЛКИН_СТАРТ
+
     for (int j = 0; j < 8; j = j+7) {
         cellsToPieces[&cells[j][7]] = new Rook(cells[j][7].x(), cells[j][7].y(), true);
         this->addItem(cellsToPieces.value(&cells[j][7]));
@@ -118,8 +118,6 @@ void Board::addFigures()
     cellsToPieces[&cells[j][7]] = new Bishop(cells[j][7].x(), cells[j][7].y(), true);
     this->addItem(cellsToPieces.value(&cells[j][7]));
     }
-
-    //КРИНЧИК_САМОДЕЛКИН_ФИНИШ
 }
 
 //тут какую-нибуд  проверку возможен ли ход
