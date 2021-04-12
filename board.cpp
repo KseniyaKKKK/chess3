@@ -10,21 +10,35 @@ Board::Board()
     connect(this, &Board::secondClick, this, &Board::move);
 }
 
+//void Board::mousePressEvent(QGraphicsSceneMouseEvent *event)
+//{
+//    if (mouseWasPressed)
+//    {
+//        clickedCell = &cells[(int(event->scenePos().x() - 39 )/ 90)][(int(event->scenePos().y() - 39 ) / 90)];
+//        mouseWasPressed = false;
+//        if (clickedCell != previousClickedCell) {
+//            emit secondClick();
+//        }
+//    }
+//    else
+//    {
+
+//        previousClickedCell = &cells[(int(event->scenePos().x() - 39 )/ 90)][(int(event->scenePos().y() - 39 ) / 90)];
+//        mouseWasPressed = true;
+//    }
+//}
+
 void Board::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (mouseWasPressed)
-    {
-        clickedCell = &cells[(int(event->scenePos().x() - 39 )/ 90)][(int(event->scenePos().y() - 39 ) / 90)];
+    previousClickedCell = clickedCell;
+    if (previousClickedCell != NULL) previousClickedCell->setBrush(Qt::transparent);
+    clickedCell = clickedCell = &cells[(int(event->scenePos().x() - 39 )/ 90)][(int(event->scenePos().y() - 39 ) / 90)];
+    clickedCell->setBrush(Qt::red);
+    if (mouseWasPressed) {
         mouseWasPressed = false;
-        if (clickedCell != previousClickedCell) {
-            //previousClickedCell->
-            emit secondClick();
-        }
+        emit secondClick();
     }
-    else
-    {
-        previousClickedCell = &cells[(int(event->scenePos().x() - 39 )/ 90)][(int(event->scenePos().y() - 39 ) / 90)];
-        //previousClickedCell->setBrush(Qt::red);
+    else {
         mouseWasPressed = true;
     }
 }
@@ -114,9 +128,20 @@ void Board::move()
     if (cellsToPieces.contains(previousClickedCell) &&
             cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell))
     {
-        cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
-        cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
-        cellsToPieces.remove(previousClickedCell);
+        if (cellsToPieces.contains(clickedCell) && cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color) {
+            //если клетка не пустая и в ней фигурка другого цвета
+            cellsToPieces[clickedCell]->setPixmap(QPixmap());
+            cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+            cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
+            //previousClickedCell->
+            cellsToPieces.remove(previousClickedCell);
+            //update();
+        } else if (!cellsToPieces.contains(clickedCell)){
+            // если пустая клетка
+            cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+            cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
+            cellsToPieces.remove(previousClickedCell);
+        }
     }
 }
 

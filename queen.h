@@ -9,7 +9,6 @@ public:
     QImage *whiteImage = new QImage(":/images/queen-white.png");
     QImage *blackImage = new QImage(":/images/queen-black.png");
     virtual bool figureCanMove(const Cell * start, const Cell * end) override;
-    bool color;
 };
 
 #endif // QUEEN_H

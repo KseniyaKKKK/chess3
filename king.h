@@ -8,7 +8,6 @@ public:
     King(int x, int y, bool color);
         QImage *whiteImage = new QImage(":/images/king-white.png");
         QImage *blackImage = new QImage(":/images/king-black.png");
-        bool color;
 };
 
 #endif // KING_H

@@ -1,8 +1,7 @@
 #include "rook.h"
 
-Rook::Rook(int x, int y, bool color) : ChessPiece(x, y)
+Rook::Rook(int x, int y, bool color) : ChessPiece(x, y, color)
 {
-    this->color = color;
     if (color) {
         this->setPixmap(QPixmap::fromImage(*whiteImage).scaled(90,90));
     }

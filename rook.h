@@ -9,7 +9,6 @@ public:
     QImage *whiteImage = new QImage(":/images/rook-white.png");
     QImage *blackImage = new QImage(":/images/rook-black.png");
     virtual bool figureCanMove(const Cell * start, const Cell * end) override;
-    bool color;
 };
 
 #endif // ROOK_H
