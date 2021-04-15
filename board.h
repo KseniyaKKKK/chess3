@@ -17,6 +17,7 @@ class Board :  public QGraphicsScene
     Cell cells[8][8];
     QMap<Cell*, ChessPiece *> cellsToPieces;
 virtual void mousePressEvent(QGraphicsSceneMouseEvent *) override;
+    bool wayIsFree(Cell * start, Cell * end);
 public:
     Board();
     Cell * clickedCell;

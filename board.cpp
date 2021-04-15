@@ -10,24 +10,6 @@ Board::Board()
     connect(this, &Board::secondClick, this, &Board::move);
 }
 
-//void Board::mousePressEvent(QGraphicsSceneMouseEvent *event)
-//{
-//    if (mouseWasPressed)
-//    {
-//        clickedCell = &cells[(int(event->scenePos().x() - 39 )/ 90)][(int(event->scenePos().y() - 39 ) / 90)];
-//        mouseWasPressed = false;
-//        if (clickedCell != previousClickedCell) {
-//            emit secondClick();
-//        }
-//    }
-//    else
-//    {
-
-//        previousClickedCell = &cells[(int(event->scenePos().x() - 39 )/ 90)][(int(event->scenePos().y() - 39 ) / 90)];
-//        mouseWasPressed = true;
-//    }
-//}
-
 void Board::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     previousClickedCell = clickedCell;
@@ -126,16 +108,15 @@ void Board::addFigures()
 void Board::move()
 {
     if (cellsToPieces.contains(previousClickedCell) &&
-            cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell))
+            cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell) &&
+            (typeid(cellsToPieces[previousClickedCell]).name() != "Knight"  && wayIsFree(previousClickedCell, clickedCell)))
     {
         if (cellsToPieces.contains(clickedCell) && cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color) {
             //если клетка не пустая и в ней фигурка другого цвета
             cellsToPieces[clickedCell]->setPixmap(QPixmap());
             cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
             cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
-            //previousClickedCell->
             cellsToPieces.remove(previousClickedCell);
-            //update();
         } else if (!cellsToPieces.contains(clickedCell)){
             // если пустая клетка
             cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
@@ -143,5 +124,27 @@ void Board::move()
             cellsToPieces.remove(previousClickedCell);
         }
     }
+}
+
+bool Board::wayIsFree(Cell * start, Cell * end) {
+    QVector<Cell*> temp;
+    if (start->column == end->column) {
+        for (int i = qMin(start->row, end->row); i < qMax(start->row, end->row); ++i) {
+            temp.push_back(&cells[end->column][i]);
+        }
+    }
+    else if (start->row == end->row) {
+        for (int i = qMin(start->column, end->column); i < qMax(start->column, end->column); ++i) {
+            temp.push_back(&cells[i][end->row]);
+        }
+    }
+    else if (abs(start->column - end->column) == abs(start->row - end->row)) {
+
+    }
+    for (auto cell : temp) {
+        if (cellsToPieces.contains(cell))
+            return false;
+    }
+    return true;
 }
 

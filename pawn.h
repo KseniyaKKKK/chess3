@@ -9,6 +9,7 @@ public:
     QImage *whiteImage = new QImage(":/images/pawn-white.png");
     QImage *blackImage = new QImage(":/images/pawn-black.png");
     virtual bool figureCanMove(const Cell * start, const Cell * end) override;
+    bool hasMoved = false;
 };
 
 #endif // PAWN_H
