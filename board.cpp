@@ -126,20 +126,29 @@ void Board::move()
 
 bool Board::wayIsFree(Cell * start, Cell * end) {
     QVector<Cell*> temp;
-    if (start->column == end->column) {
-        for (int i = qMin(start->row, end->row); i < qMax(start->row, end->row); ++i) {
-            temp.push_back(&cells[end->column][i]);
+    if (start->column == end->column)
+    {
+        for (int i = qMin(start->row, end->row) + 1; i < qMax(start->row, end->row); ++i)
+        {
+           temp.push_back(&cells[end->column][i]);
         }
     }
-    else if (start->row == end->row) {
-        for (int i = qMin(start->column, end->column); i < qMax(start->column, end->column); ++i) {
+
+    else if (start->row == end->row)
+    {
+        for (int i = qMin(start->column, end->column) + 1; i < qMax(start->column, end->column); ++i)
+        {
             temp.push_back(&cells[i][end->row]);
         }
     }
-    else if (abs(start->column - end->column) == abs(start->row - end->row)) {
 
+    else if (abs(start->column - end->column) == abs(start->row - end->row))
+    {
+        temp.push_back(&cells[end->column][end->row]);
     }
-    for (auto cell : temp) {
+
+    for (auto cell : temp)
+    {
         if (cellsToPieces.contains(cell))
             return false;
     }
