@@ -16,6 +16,7 @@ class Board :  public QGraphicsScene
     Q_OBJECT
     Cell cells[8][8];
     QMap<Cell*, ChessPiece *> cellsToPieces;
+    bool turn = true;
 virtual void mousePressEvent(QGraphicsSceneMouseEvent *) override;
     bool wayIsFree(Cell * start, Cell * end);
 public:

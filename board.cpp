@@ -107,7 +107,8 @@ void Board::move()
 {
     if (cellsToPieces.contains(previousClickedCell) &&
             cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell) &&
-            (typeid(cellsToPieces[previousClickedCell]).name() != "Knight"  && wayIsFree(previousClickedCell, clickedCell)))
+            (typeid(cellsToPieces[previousClickedCell]).name() != "Knight"  && wayIsFree(previousClickedCell, clickedCell))
+            && turn == cellsToPieces[previousClickedCell]->color)
     {
         if (cellsToPieces.contains(clickedCell) && cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color) {
             //если клетка не пустая и в ней фигурка другого цвета
@@ -115,11 +116,13 @@ void Board::move()
             cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
             cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
             cellsToPieces.remove(previousClickedCell);
+            turn = !turn;
         } else if (!cellsToPieces.contains(clickedCell)){
             // если пустая клетка
             cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
             cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
             cellsToPieces.remove(previousClickedCell);
+            turn = !turn;
         }
     }
 }
@@ -127,12 +130,14 @@ void Board::move()
 bool Board::wayIsFree(Cell * start, Cell * end) {
     QVector<Cell*> temp;
     if (start->column == end->column) {
-        for (int i = qMin(start->row, end->row); i < qMax(start->row, end->row); ++i) {
+        for (int i = qMin(start->row, end->row) + 1; i < qMax(start->row, end->row); ++i) {
+            if (i != start->column)
             temp.push_back(&cells[end->column][i]);
         }
     }
     else if (start->row == end->row) {
-        for (int i = qMin(start->column, end->column); i < qMax(start->column, end->column); ++i) {
+        for (int i = qMin(start->column, end->column) + 1; i < qMax(start->column, end->column); ++i) {
+            if (i != start->row)
             temp.push_back(&cells[i][end->row]);
         }
     }
