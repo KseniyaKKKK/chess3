@@ -19,6 +19,7 @@ class Board :  public QGraphicsScene
     bool turn = true;
 virtual void mousePressEvent(QGraphicsSceneMouseEvent *) override;
     bool wayIsFree(Cell * start, Cell * end);
+
 public:
     Board();
     Cell * clickedCell;
@@ -26,10 +27,14 @@ public:
     bool mouseWasPressed;
     void drawCells();
     void addFigures();
+
+    void Sum();
+
 public slots:
     void move();
 signals:
     void secondClick();
+
 };
 
 #endif // BOARD_H

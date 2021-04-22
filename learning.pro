@@ -18,7 +18,7 @@ SOURCES += \
     main.cpp \
     pawn.cpp \
     queen.cpp \
-    rook.cpp \
+    rook.cpp
 
 HEADERS += \
     bishop.h \
@@ -29,7 +29,7 @@ HEADERS += \
     knight.h \
     pawn.h \
     queen.h \
-    rook.h \
+    rook.h
 
 FORMS +=
 
