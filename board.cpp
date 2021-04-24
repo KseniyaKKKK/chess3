@@ -152,7 +152,34 @@ bool Board::wayIsFree(Cell * start, Cell * end) {
 
     else if (abs(start->column - end->column) == abs(start->row  - end->row) )
     {
-            //temp.push_back(&cells[end->column][end->row]); // не работает, он вроде по диагонали не пробегает
+       if (start->column >= end->column) {
+           if (start->row >= end->row) {
+               for (int i = 1; i < start->column - end->column; ++i)
+               {
+                   temp.push_back(&cells[end->column + i][end->row + i]);
+               }
+           }
+           else {
+               for (int i = 1; i < start->column - end->column; ++i)
+               {
+                   temp.push_back(&cells[end->column + i][start->row + i]);
+               }
+           }
+       }
+       else {
+           if (start->row >= end->row) {
+               for (int i = 1; i < end->column - start->column; ++i)
+               {
+                   temp.push_back(&cells[start->column + i][end->row + i]);
+               }
+           }
+           else {
+               for (int i = 1; i < end->column - start->column; ++i)
+               {
+                   temp.push_back(&cells[start->column + i][start->row + i]);
+               }
+           }
+       }
     }
 
     for (auto cell : temp)

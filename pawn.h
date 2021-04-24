@@ -10,8 +10,6 @@ public:
     QImage *blackImage = new QImage(":/images/pawn-black.png");
     virtual bool figureCanMove(const Cell * start, const Cell * end) override;
     bool hasMoved = false;
-
-   // virtual void SumPrise (Cell *star, Cell *end) override;
 };
 
 #endif // PAWN_H

@@ -13,11 +13,6 @@ public:
     virtual bool figureCanMove(const Cell * start, const Cell * end);
     ChessPiece(int x, int y, bool color);
     int weight = 1;
-//    virtual void SumPrise (Cell *star, Cell *end);
-//    QVector <double> CountPriseB;
-//    QVector <double> CountPriseW;
-
-   // enum Price {King = 0, Pawn = 1, Knight = 3, Bishop = 3, Rook = 5, Queen = 9}; стоимость меняется, так что низя
 };
 
 #endif // CHESSPIECE_H
