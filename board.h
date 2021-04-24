@@ -27,8 +27,9 @@ public:
     bool mouseWasPressed;
     void drawCells();
     void addFigures();
-
-    void Sum();
+    int sumW;
+    int sumB;
+    int countSum(bool color);
 
 public slots:
     void move();

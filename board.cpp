@@ -124,6 +124,10 @@ void Board::move()
             cellsToPieces.remove(previousClickedCell);
             turn = !turn;
         }
+
+        sumW = countSum(true);
+        sumB = countSum(false);
+        qDebug() << sumW << " " << sumB << Qt::endl;
     }
 }
 
@@ -134,7 +138,6 @@ bool Board::wayIsFree(Cell * start, Cell * end) {
     {
         for (int i = qMin(start->row, end->row) + 1; i < qMax(start->row, end->row); ++i)
         {
-            //if (i != start->column)
             temp.push_back(&cells[end->column][i]);
         }
     }
@@ -143,31 +146,36 @@ bool Board::wayIsFree(Cell * start, Cell * end) {
     {
         for (int i = qMin(start->column, end->column) + 1; i < qMax(start->column, end->column); ++i)
         {
-           // if (i != start->row)
             temp.push_back(&cells[i][end->row]);
         }
     }
 
     else if (abs(start->column - end->column) == abs(start->row  - end->row) )
     {
-            temp.push_back(&cells[end->column][end->row]); // не работает, он вроде по диагонали не пробегает
+            //temp.push_back(&cells[end->column][end->row]); // не работает, он вроде по диагонали не пробегает
     }
 
     for (auto cell : temp)
     {
-       // SumPrise();
         if (cellsToPieces.contains(cell))
             return false;
     }
     return true;  
 }
 
-void Board :: Sum ()
-{
-   // for (auto f : cellsToPieces)
-    //{
-        //Да хто его знает что я тут понаписывала, стирай, Ксюша всё нахуй
-    //}
+int Board::countSum(bool color) {
+    int sum = 0;
+    for (int i = 0; i < 8; i++) {
+        for  (int j = 0; j < 8; j ++) {
+            if (cellsToPieces.contains(&cells[i][j])) {
+                if (cellsToPieces[&cells[i][j]]->color == color) {
+                    sum += cellsToPieces[&cells[i][j]]->weight;
+                }
+            }
+        }
+    }
+
+    return sum;
 }
 
 

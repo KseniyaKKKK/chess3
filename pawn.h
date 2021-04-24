@@ -11,7 +11,7 @@ public:
     virtual bool figureCanMove(const Cell * start, const Cell * end) override;
     bool hasMoved = false;
 
-    virtual void SumPrise (Cell *star, Cell *end) override;
+   // virtual void SumPrise (Cell *star, Cell *end) override;
 };
 
 #endif // PAWN_H
