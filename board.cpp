@@ -1,6 +1,7 @@
 #include "board.h"
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
+#include <QVector>
 
 Board::Board()
 {
@@ -8,6 +9,7 @@ Board::Board()
     previousClickedCell = NULL;
     clickedCell = NULL;
     connect(this, &Board::secondClick, this, &Board::move);
+    connect(this, &Board::compMove, this, &Board::move);
 }
 
 void Board::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -105,6 +107,13 @@ void Board::addFigures()
 //тут какую-нибуд  проверку возможен ли ход
 void Board::move()
 {
+    if (turn == compColor) {
+        possibleMoves = getPossibleMoves(turn);
+        int index = rand() % possibleMoves.length();
+        previousClickedCell = possibleMoves[index].start;
+        clickedCell = possibleMoves[index].end;
+    }
+
     if (cellsToPieces.contains(previousClickedCell) &&
             cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell) &&
             (typeid(cellsToPieces[previousClickedCell]).name() != "Knight"  && wayIsFree(previousClickedCell, clickedCell))
@@ -117,6 +126,7 @@ void Board::move()
             cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
             cellsToPieces.remove(previousClickedCell);
             turn = !turn;
+
         } else if (!cellsToPieces.contains(clickedCell)){
             // если пустая клетка
             cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
@@ -125,9 +135,13 @@ void Board::move()
             turn = !turn;
         }
 
+        if (compColor == turn) {
+            emit compMove();
+
+        }
+
         sumW = countSum(true);
         sumB = countSum(false);
-        qDebug() << sumW << " " << sumB << Qt::endl;
     }
 }
 
@@ -206,8 +220,22 @@ int Board::countSum(bool color) {
 }
 
 
+QVector<Move> Board::getPossibleMoves(bool color) {
+    QVector<Move> result;
+    for (auto it = cellsToPieces.begin(); it != cellsToPieces.end(); it++) {
+        if (it.value()->color == color) {
+            for (int i = 0; i < 8; ++i) {
+                for (int j = 0; j < 8; ++j) {
+                    if (cellsToPieces[it.key()]->figureCanMove(it.key(), &cells[i][j]) &&
+                            (typeid(cellsToPieces[it.key()]).name() != "Knight"  && wayIsFree(it.key(), &cells[i][j])) &&
+                            ((cellsToPieces.contains(&cells[i][j]) && cellsToPieces[it.key()]->color != cellsToPieces[&cells[i][j]]->color) || !cellsToPieces.contains(&cells[i][j]))) {
+                        result.push_back({it.key(), &cells[i][j]});
+                        //qDebug() << it.key()->row << " " << it.key()->column << " - " << (&cells[i][j])->row << " " << (&cells[i][j])->column << Qt::endl;
+                    }
+                }
+            }
+        }
+    }
 
-
-
-
-
+    return result;
+}

@@ -8,7 +8,6 @@ class ChessPiece : public QGraphicsPixmapItem
 {
 
 public:
-    double SumB, SumW = 0.0;
     bool color;
     virtual bool figureCanMove(const Cell * start, const Cell * end);
     ChessPiece(int x, int y, bool color);

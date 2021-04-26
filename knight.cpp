@@ -8,7 +8,10 @@ Knight::Knight(int x, int y, bool color) : ChessPiece(x, y, color)
     else {
         this->setPixmap(QPixmap::fromImage(*blackImage).scaled(90,90));
     }
+
+    weight = 3;
 }
+
 bool Knight::figureCanMove(const Cell * start, const Cell * end)
 {
     if((start->row-1 ==end->row  &&  start->column+ 2 ==end->column ) || (start->row - 1 ==end->row  && start->column - 2 ==end->column) ||

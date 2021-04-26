@@ -8,6 +8,8 @@ Queen::Queen(int x, int y, bool color) : ChessPiece(x, y, color)
     else {
         this->setPixmap(QPixmap::fromImage(*blackImage).scaled(90,90));
     }
+
+    weight = 9;
 }
 
 bool Queen::figureCanMove(const Cell *start, const Cell *end)

@@ -8,6 +8,8 @@ Bishop::Bishop(int x, int y, bool color) : ChessPiece(x, y, color)
     else {
         this->setPixmap(QPixmap::fromImage(*blackImage).scaled(90,90));
     }
+
+    weight = 4;
 }
 
 bool Bishop::figureCanMove(const Cell *start, const Cell *end)

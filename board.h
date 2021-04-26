@@ -10,6 +10,7 @@
 #include "knight.h"
 #include "queen.h"
 #include "bishop.h"
+#include "move.h"
 
 class Board :  public QGraphicsScene
 {
@@ -19,7 +20,7 @@ class Board :  public QGraphicsScene
     bool turn = true;
 virtual void mousePressEvent(QGraphicsSceneMouseEvent *) override;
     bool wayIsFree(Cell * start, Cell * end);
-
+    bool compColor = false;
 public:
     Board();
     Cell * clickedCell;
@@ -30,12 +31,13 @@ public:
     int sumW;
     int sumB;
     int countSum(bool color);
-
+    QVector<Move> possibleMoves;
+    QVector<Move> getPossibleMoves(bool color);
 public slots:
     void move();
 signals:
     void secondClick();
-
+    void compMove();
 };
 
 #endif // BOARD_H
