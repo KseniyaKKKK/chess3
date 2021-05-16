@@ -10,6 +10,8 @@ public:
         QImage *blackImage = new QImage(":/images/king-black.png");
         virtual bool figureCanMove(const Cell * start, const Cell * end) override;
         bool color;
+
+        bool FirstMoveKing = false;
 };
 
 #endif // KING_H

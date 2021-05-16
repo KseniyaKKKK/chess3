@@ -16,6 +16,7 @@ bool Rook::figureCanMove(const Cell *start, const Cell *end)
 {
     if (start->column == end->column || start->row == end->row)
     {
+        FirstMoveRook = true;
         return true;
     }
     return false;

@@ -104,7 +104,8 @@ void Board::addFigures()
     }
 }
 
-//тут какую-нибуд  проверку возможен ли ход
+
+
 void Board::move()
 {
     if (turn == compColor) {
@@ -139,6 +140,74 @@ void Board::move()
             emit compMove();
 
         }
+
+
+
+
+
+        ////////////////////////////////////////////////
+
+        if (typeid(cellsToPieces[clickedCell]).name() == "King" && typeid (cellsToPieces[previousClickedCell]).name() == "Rook")
+        {
+              qDebug() << "DDDDDDDDDDDDDDD"<< Qt ::endl;
+              if ( (static_cast<Rook*>(cellsToPieces[clickedCell]) -> FirstMoveRook == false) && (static_cast<King*>(cellsToPieces[clickedCell]) ->FirstMoveKing == false))
+              {
+                  if (turn == cellsToPieces[previousClickedCell]->color && turn == cellsToPieces[clickedCell]->color)
+                  {
+                       if (previousClickedCell->column == 0)
+                       {
+                           cellsToPieces[clickedCell]->setPixmap(QPixmap());
+                           cellsToPieces[previousClickedCell]->setPixmap(QPixmap());
+                           //cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+
+                           cellsToPieces.insert(&cells[2][7], cellsToPieces[clickedCell]);
+                           cellsToPieces.insert(&cells[3][7], cellsToPieces[previousClickedCell]);
+                          //cellsToPieces.remove(previousClickedCell);
+                        }
+
+                        else
+                        {
+                           cellsToPieces[clickedCell]->setPixmap(QPixmap());
+                           cellsToPieces[previousClickedCell]->setPixmap(QPixmap());
+
+                           cellsToPieces.insert(&cells[6][7], cellsToPieces[clickedCell]);
+                           cellsToPieces.insert(&cells[5][7], cellsToPieces[previousClickedCell]);
+                        }
+
+                   }
+
+                   else
+                   {
+                      if (previousClickedCell->column == 0)
+                      {
+                          cellsToPieces[clickedCell]->setPixmap(QPixmap());
+                          cellsToPieces[previousClickedCell]->setPixmap(QPixmap());
+                          //cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+
+                          cellsToPieces.insert(&cells[2][0], cellsToPieces[clickedCell]);
+                          cellsToPieces.insert(&cells[3][0], cellsToPieces[previousClickedCell]);
+                         //cellsToPieces.remove(previousClickedCell);
+                       }
+
+                       else
+                       {
+                          cellsToPieces[clickedCell]->setPixmap(QPixmap());
+                          cellsToPieces[previousClickedCell]->setPixmap(QPixmap());
+
+                          cellsToPieces.insert(&cells[6][0], cellsToPieces[clickedCell]);
+                          cellsToPieces.insert(&cells[5][0], cellsToPieces[previousClickedCell]);
+                       }
+                    }
+                }
+        }
+
+
+
+
+                ////////////////////////////////////////////////
+
+
+
 
         sumW = countSum(true);
         sumB = countSum(false);

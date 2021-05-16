@@ -9,9 +9,14 @@ King::King(int x, int y, bool color) : ChessPiece(x, y, color)
         this->setPixmap(QPixmap::fromImage(*blackImage).scaled(90,90));
     }
 }
-    bool King::figureCanMove(const Cell *start, const Cell *end)
+
+bool King::figureCanMove(const Cell *start, const Cell *end)
 {
-    if (pow(start->column-end->column, 2) + pow(start->row-end->row, 2) <= 2) return true;
+    if (pow(start->column-end->column, 2) + pow(start->row-end->row, 2) <= 2)
+    {
+       FirstMoveKing = true;
+       return true;
+    }
     return false;
 }
 

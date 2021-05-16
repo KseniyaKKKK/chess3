@@ -33,6 +33,7 @@ public:
     int countSum(bool color);
     QVector<Move> possibleMoves;
     QVector<Move> getPossibleMoves(bool color);
+
 public slots:
     void move();
 signals:
