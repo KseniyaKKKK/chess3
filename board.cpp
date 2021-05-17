@@ -130,15 +130,48 @@ void Board::move()
                 qDebug() << "Shah" << Qt :: endl;
             }
 
-            ////////////////////
             else
             {
+
+                ////
+
+                if (cellsToPieces[previousClickedCell]->name == "Pawn")
+                {
+                    qDebug() << "hgffdfdfy" << Qt :: endl;
+                    if ((abs(previousClickedCell->column - clickedCell->column) == 1) && (abs(clickedCell->row - previousClickedCell->row) == 1))
+                    {
+                        if (turn == true && clickedCell->row - previousClickedCell->row == 1)
+                        {
+                            cellsToPieces[clickedCell]->setPixmap(QPixmap());
+                            cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+                            cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                            cellsToPieces.remove(previousClickedCell);
+                            turn = !turn;
+                        }
+
+                        else if (turn == false && previousClickedCell->row - clickedCell->row == 1)
+                        {
+                            cellsToPieces[clickedCell]->setPixmap(QPixmap());
+                            cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+                            cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                            cellsToPieces.remove(previousClickedCell);
+                            turn = !turn;
+                        }
+                    }
+                }
+
+                ///
+
                 cellsToPieces[clickedCell]->setPixmap(QPixmap());
                 cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
                 cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
                 cellsToPieces.remove(previousClickedCell);
                 turn = !turn;
             }
+qDebug() << typeid (cellsToPieces[previousClickedCell]).name() << Qt :: endl;
+
+            ////////////////////
+
 
         } else if (!cellsToPieces.contains(clickedCell)){
             // если пустая клетка

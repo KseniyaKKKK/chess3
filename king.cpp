@@ -8,6 +8,7 @@ King::King(int x, int y, bool color) : ChessPiece(x, y, color)
     else {
         this->setPixmap(QPixmap::fromImage(*blackImage).scaled(90,90));
     }
+    name = "King";
 }
 
 bool King::figureCanMove(const Cell *start, const Cell *end)

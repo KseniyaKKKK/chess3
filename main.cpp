@@ -13,12 +13,12 @@ public:
 
 MyButton :: MyButton (QWidget *perent) : QWidget (perent){
     QPushButton *quitBtn = new QPushButton ("White", this);
-    quitBtn->setGeometry(10,140,75,30);
+    quitBtn->setGeometry(100,140,75,30);
 
     connect (quitBtn, &QPushButton ::clicked, qApp, &QApplication :: quit);
 
     QPushButton *quitBtn2 = new QPushButton ("Black", this);
-    quitBtn->setGeometry(150,140,75,30);
+    quitBtn2->setGeometry(150,140,75,30);
 
     connect (quitBtn2, &QPushButton ::clicked, qApp, &QApplication :: quit);
 

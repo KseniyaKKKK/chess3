@@ -10,6 +10,7 @@ Queen::Queen(int x, int y, bool color) : ChessPiece(x, y, color)
     }
 
     weight = 9;
+    name = "Queen";
 }
 
 bool Queen::figureCanMove(const Cell *start, const Cell *end)

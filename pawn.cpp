@@ -10,6 +10,7 @@ Pawn::Pawn(int x, int y, bool color) : ChessPiece(x, y, color)
     }
 
     weight = 1;
+    name = "Pawn";
 }
 
 bool Pawn::figureCanMove(const Cell *start, const Cell *end)

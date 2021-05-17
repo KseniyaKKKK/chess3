@@ -10,6 +10,7 @@ Knight::Knight(int x, int y, bool color) : ChessPiece(x, y, color)
     }
 
     weight = 3;
+    name = "Knight";
 }
 
 bool Knight::figureCanMove(const Cell * start, const Cell * end)

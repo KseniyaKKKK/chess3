@@ -10,6 +10,7 @@ Bishop::Bishop(int x, int y, bool color) : ChessPiece(x, y, color)
     }
 
     weight = 4;
+    name = "Bishop";
 }
 
 bool Bishop::figureCanMove(const Cell *start, const Cell *end)

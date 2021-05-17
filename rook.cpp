@@ -10,6 +10,7 @@ Rook::Rook(int x, int y, bool color) : ChessPiece(x, y, color)
     }
 
     weight = 5;
+    name = "Rook";
 }
 
 bool Rook::figureCanMove(const Cell *start, const Cell *end)
