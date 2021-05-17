@@ -122,11 +122,23 @@ void Board::move()
     {
         if (cellsToPieces.contains(clickedCell) && cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color) {
             //если клетка не пустая и в ней фигурка другого цвета
-            cellsToPieces[clickedCell]->setPixmap(QPixmap());
-            cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
-            cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
-            cellsToPieces.remove(previousClickedCell);
-            turn = !turn;
+
+            //////////////////
+
+            if (typeid (cellsToPieces[clickedCell]).name() == "King")
+            {
+                qDebug() << "Shah" << Qt :: endl;
+            }
+
+            ////////////////////
+            else
+            {
+                cellsToPieces[clickedCell]->setPixmap(QPixmap());
+                cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+                cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                cellsToPieces.remove(previousClickedCell);
+                turn = !turn;
+            }
 
         } else if (!cellsToPieces.contains(clickedCell)){
             // если пустая клетка
@@ -141,13 +153,9 @@ void Board::move()
 
         }
 
-
-
-
-
         ////////////////////////////////////////////////
 
-        if (typeid(cellsToPieces[clickedCell]).name() == "King" && typeid (cellsToPieces[previousClickedCell]).name() == "Rook")
+     if (typeid(cellsToPieces[clickedCell]).name() == "King" && typeid (cellsToPieces[previousClickedCell]).name() == "Rook")
         {
               qDebug() << "DDDDDDDDDDDDDDD"<< Qt ::endl;
               if ( (static_cast<Rook*>(cellsToPieces[clickedCell]) -> FirstMoveRook == false) && (static_cast<King*>(cellsToPieces[clickedCell]) ->FirstMoveKing == false))
@@ -159,6 +167,7 @@ void Board::move()
                            cellsToPieces[clickedCell]->setPixmap(QPixmap());
                            cellsToPieces[previousClickedCell]->setPixmap(QPixmap());
                            //cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+                           cellsToPieces[previousClickedCell]->setPos((&cells[3][7])->pos());
 
                            cellsToPieces.insert(&cells[2][7], cellsToPieces[clickedCell]);
                            cellsToPieces.insert(&cells[3][7], cellsToPieces[previousClickedCell]);
@@ -173,7 +182,6 @@ void Board::move()
                            cellsToPieces.insert(&cells[6][7], cellsToPieces[clickedCell]);
                            cellsToPieces.insert(&cells[5][7], cellsToPieces[previousClickedCell]);
                         }
-
                    }
 
                    else
@@ -200,10 +208,6 @@ void Board::move()
                     }
                 }
         }
-
-
-
-
                 ////////////////////////////////////////////////
 
 
@@ -308,3 +312,7 @@ QVector<Move> Board::getPossibleMoves(bool color) {
 
     return result;
 }
+
+
+
+
