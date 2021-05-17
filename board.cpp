@@ -244,10 +244,25 @@ qDebug() << typeid (cellsToPieces[previousClickedCell]).name() << Qt :: endl;
                 ////////////////////////////////////////////////
 
 
+    }
+    //если в начальной клетке есть пешка
+    if (cellsToPieces.contains(previousClickedCell))
+    {
+        if (cellsToPieces[previousClickedCell]->name == "Knight") {
+            if (cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell)) {
+                //походи
+            }
+        }
+        else if (cellsToPieces[previousClickedCell]->name == "Pawn") {
+            if (abs(previousClickedCell->column - clickedCell->column) == abs(previousClickedCell->row - clickedCell->row) )
+            {
+                    if (cellsToPieces.contains(clickedCell))
+                        static_cast<Pawn*>(cellsToPieces[clickedCell])->forpawn = true;
+                    else
+                        static_cast<Pawn*>(cellsToPieces[clickedCell])->forpawn = false;
+            }
 
-
-        sumW = countSum(true);
-        sumB = countSum(false);
+        }
     }
 }
 
