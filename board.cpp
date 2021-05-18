@@ -18,7 +18,7 @@ void Board::mousePressEvent(QGraphicsSceneMouseEvent *event)
     previousClickedCell = clickedCell;
     if (previousClickedCell != NULL) previousClickedCell->setBrush(Qt::transparent);
     clickedCell = clickedCell = &cells[(int(event->scenePos().x() - 39 )/ 90)][(int(event->scenePos().y() - 39 ) / 90)];
-    //clickedCell->setBrush(Qt::red);
+    clickedCell->setBrush(Qt::red);
     if (mouseWasPressed) {
         mouseWasPressed = false;
         emit secondClick();
@@ -110,6 +110,7 @@ void Board::addFigures()
 void Board::move()
 {
     if (turn == compColor) {
+        clickedCell->setBrush(Qt::transparent);
         possibleMoves = getPossibleMoves(turn);
         int index = rand() % possibleMoves.length();
         previousClickedCell = possibleMoves[index].start;
