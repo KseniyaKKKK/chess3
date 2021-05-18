@@ -165,17 +165,14 @@ void Board::move()
                   {
                        if (previousClickedCell->column == 0)
                        {
-                           cellsToPieces[clickedCell]->setPixmap(QPixmap());
-
                            //cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
 
                            cellsToPieces[previousClickedCell]->setPos((&cells[3][7])->pos());
                            cellsToPieces.insert(&cells[3][7], cellsToPieces[previousClickedCell]);
-                           cellsToPieces[previousClickedCell]->setPixmap(QPixmap());
+
+
                            cellsToPieces[clickedCell]->setPos((&cells[2][7])->pos());
-
                            cellsToPieces.insert(&cells[2][7], cellsToPieces[clickedCell]);
-
 
                            cellsToPieces.remove(previousClickedCell);
                            cellsToPieces.remove(clickedCell);
@@ -183,15 +180,14 @@ void Board::move()
 
                         else
                         {
-                           cellsToPieces[clickedCell]->setPixmap(QPixmap());
-                           cellsToPieces[previousClickedCell]->setPixmap(QPixmap());
-
-
                            cellsToPieces[previousClickedCell]->setPos((&cells[5][7])->pos());
                            cellsToPieces[clickedCell]->setPos((&cells[6][7])->pos());
 
                            cellsToPieces.insert(&cells[6][7], cellsToPieces[clickedCell]);
                            cellsToPieces.insert(&cells[5][7], cellsToPieces[previousClickedCell]);
+
+                           cellsToPieces.remove(previousClickedCell);
+                           cellsToPieces.remove(clickedCell);
                         }
                    }
 
@@ -199,22 +195,29 @@ void Board::move()
                    {
                       if (previousClickedCell->column == 0)
                       {
-                          cellsToPieces[clickedCell]->setPixmap(QPixmap());
-                          cellsToPieces[previousClickedCell]->setPixmap(QPixmap());
                           //cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+
+                          cellsToPieces[previousClickedCell]->setPos((&cells[3][0])->pos());
+                          cellsToPieces[clickedCell]->setPos((&cells[2][0])->pos());
 
                           cellsToPieces.insert(&cells[2][0], cellsToPieces[clickedCell]);
                           cellsToPieces.insert(&cells[3][0], cellsToPieces[previousClickedCell]);
-                         //cellsToPieces.remove(previousClickedCell);
+
+
+                          cellsToPieces.remove(previousClickedCell);
+                          cellsToPieces.remove(clickedCell);
                        }
 
                        else
                        {
-                          cellsToPieces[clickedCell]->setPixmap(QPixmap());
-                          cellsToPieces[previousClickedCell]->setPixmap(QPixmap());
+                          cellsToPieces[previousClickedCell]->setPos((&cells[5][0])->pos());
+                          cellsToPieces[clickedCell]->setPos((&cells[6][0])->pos());
 
                           cellsToPieces.insert(&cells[6][0], cellsToPieces[clickedCell]);
                           cellsToPieces.insert(&cells[5][0], cellsToPieces[previousClickedCell]);
+
+                          cellsToPieces.remove(previousClickedCell);
+                          cellsToPieces.remove(clickedCell);
                        }
                     }
                 }
