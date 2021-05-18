@@ -15,7 +15,7 @@ Pawn::Pawn(int x, int y, bool color) : ChessPiece(x, y, color)
 
 bool Pawn::figureCanMove(const Cell *start, const Cell *end)
 {
-    if (start->column == end->column)
+    if ((start->column == end->column))
     {
         if (!this->color &&  (end->row - start->row == 1 || (end->row - start->row == 2 && !hasMoved))) {
             hasMoved = true;
@@ -26,5 +26,19 @@ bool Pawn::figureCanMove(const Cell *start, const Cell *end)
             return true;
         }
     }
+      else if ((abs(start->column - end->column) == abs(end->row - start->row) == 1))
+        {
+            if (!this->color && end->row - start->row == 1 && forpawn == true)
+            {
+               // forpawn = false;
+                return true;
+            }
+
+            else if (this->color && start->row - end->row == 1 && forpawn == true)
+            {
+               // forpawn = false;
+                return true;
+            }
+        }
     return false;
 }

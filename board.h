@@ -11,6 +11,7 @@
 #include "queen.h"
 #include "bishop.h"
 #include "move.h"
+#include "menu.h"
 
 class Board :  public QGraphicsScene
 {
@@ -33,7 +34,7 @@ public:
     int countSum(bool color);
     QVector<Move> possibleMoves;
     QVector<Move> getPossibleMoves(bool color);
-
+    Menu *menu;
 public slots:
     void move();
 signals:

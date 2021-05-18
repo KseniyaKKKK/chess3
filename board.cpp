@@ -5,6 +5,7 @@
 
 Board::Board()
 {
+    menu = new Menu();
     mouseWasPressed = false;
     previousClickedCell = NULL;
     clickedCell = NULL;
@@ -17,7 +18,7 @@ void Board::mousePressEvent(QGraphicsSceneMouseEvent *event)
     previousClickedCell = clickedCell;
     if (previousClickedCell != NULL) previousClickedCell->setBrush(Qt::transparent);
     clickedCell = clickedCell = &cells[(int(event->scenePos().x() - 39 )/ 90)][(int(event->scenePos().y() - 39 ) / 90)];
-    clickedCell->setBrush(Qt::red);
+    //clickedCell->setBrush(Qt::red);
     if (mouseWasPressed) {
         mouseWasPressed = false;
         emit secondClick();
@@ -120,60 +121,29 @@ void Board::move()
             (typeid(cellsToPieces[previousClickedCell]).name() != "Knight"  && wayIsFree(previousClickedCell, clickedCell))
             && turn == cellsToPieces[previousClickedCell]->color)
     {
-        if (cellsToPieces.contains(clickedCell) && cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color) {
+        if (cellsToPieces.contains(clickedCell) && cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color)
+        {
             //если клетка не пустая и в ней фигурка другого цвета
 
-            //////////////////
 
-            if (typeid (cellsToPieces[clickedCell]).name() == "King")
+            if (cellsToPieces[clickedCell]->name  == "King")
             {
                 qDebug() << "Shah" << Qt :: endl;
             }
 
             else
             {
-
-                ////
-
-                if (cellsToPieces[previousClickedCell]->name == "Pawn")
-                {
-                    qDebug() << "hgffdfdfy" << Qt :: endl;
-                    if ((abs(previousClickedCell->column - clickedCell->column) == 1) && (abs(clickedCell->row - previousClickedCell->row) == 1))
-                    {
-                        if (turn == true && clickedCell->row - previousClickedCell->row == 1)
-                        {
-                            cellsToPieces[clickedCell]->setPixmap(QPixmap());
-                            cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
-                            cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                            cellsToPieces.remove(previousClickedCell);
-                            turn = !turn;
-                        }
-
-                        else if (turn == false && previousClickedCell->row - clickedCell->row == 1)
-                        {
-                            cellsToPieces[clickedCell]->setPixmap(QPixmap());
-                            cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
-                            cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                            cellsToPieces.remove(previousClickedCell);
-                            turn = !turn;
-                        }
-                    }
-                }
-
-                ///
-
                 cellsToPieces[clickedCell]->setPixmap(QPixmap());
                 cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
                 cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
                 cellsToPieces.remove(previousClickedCell);
                 turn = !turn;
             }
-qDebug() << typeid (cellsToPieces[previousClickedCell]).name() << Qt :: endl;
 
-            ////////////////////
+        }
 
-
-        } else if (!cellsToPieces.contains(clickedCell)){
+        else if (!cellsToPieces.contains(clickedCell))
+        {
             // если пустая клетка
             cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
             cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
@@ -186,11 +156,9 @@ qDebug() << typeid (cellsToPieces[previousClickedCell]).name() << Qt :: endl;
 
         }
 
-        ////////////////////////////////////////////////
-
-     if (typeid(cellsToPieces[clickedCell]).name() == "King" && typeid (cellsToPieces[previousClickedCell]).name() == "Rook")
+     if (cellsToPieces[clickedCell]->name  == "King" && cellsToPieces[previousClickedCell]->name  == "Rook")
         {
-              qDebug() << "DDDDDDDDDDDDDDD"<< Qt ::endl;
+              //qDebug() << "DDDDDDDDDDDDDDD"<< Qt ::endl;
               if ( (static_cast<Rook*>(cellsToPieces[clickedCell]) -> FirstMoveRook == false) && (static_cast<King*>(cellsToPieces[clickedCell]) ->FirstMoveKing == false))
               {
                   if (turn == cellsToPieces[previousClickedCell]->color && turn == cellsToPieces[clickedCell]->color)
@@ -198,19 +166,29 @@ qDebug() << typeid (cellsToPieces[previousClickedCell]).name() << Qt :: endl;
                        if (previousClickedCell->column == 0)
                        {
                            cellsToPieces[clickedCell]->setPixmap(QPixmap());
-                           cellsToPieces[previousClickedCell]->setPixmap(QPixmap());
+
                            //cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+
                            cellsToPieces[previousClickedCell]->setPos((&cells[3][7])->pos());
+                           cellsToPieces.insert(&cells[3][7], cellsToPieces[previousClickedCell]);
+                           cellsToPieces[previousClickedCell]->setPixmap(QPixmap());
+                           cellsToPieces[clickedCell]->setPos((&cells[2][7])->pos());
 
                            cellsToPieces.insert(&cells[2][7], cellsToPieces[clickedCell]);
-                           cellsToPieces.insert(&cells[3][7], cellsToPieces[previousClickedCell]);
-                          //cellsToPieces.remove(previousClickedCell);
+
+
+                           cellsToPieces.remove(previousClickedCell);
+                           cellsToPieces.remove(clickedCell);
                         }
 
                         else
                         {
                            cellsToPieces[clickedCell]->setPixmap(QPixmap());
                            cellsToPieces[previousClickedCell]->setPixmap(QPixmap());
+
+
+                           cellsToPieces[previousClickedCell]->setPos((&cells[5][7])->pos());
+                           cellsToPieces[clickedCell]->setPos((&cells[6][7])->pos());
 
                            cellsToPieces.insert(&cells[6][7], cellsToPieces[clickedCell]);
                            cellsToPieces.insert(&cells[5][7], cellsToPieces[previousClickedCell]);
@@ -246,7 +224,7 @@ qDebug() << typeid (cellsToPieces[previousClickedCell]).name() << Qt :: endl;
 
     }
     //если в начальной клетке есть пешка
-    if (cellsToPieces.contains(previousClickedCell))
+   /* if (cellsToPieces.contains(previousClickedCell))
     {
         if (cellsToPieces[previousClickedCell]->name == "Knight") {
             if (cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell)) {
@@ -263,7 +241,7 @@ qDebug() << typeid (cellsToPieces[previousClickedCell]).name() << Qt :: endl;
             }
 
         }
-    }
+    }*/
 }
 
 bool Board::wayIsFree(Cell * start, Cell * end) {

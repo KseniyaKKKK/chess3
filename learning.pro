@@ -16,6 +16,7 @@ SOURCES += \
     king.cpp \
     knight.cpp \
     main.cpp \
+    menu.cpp \
     move.cpp \
     pawn.cpp \
     queen.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     chesspiece.h \
     king.h \
     knight.h \
+    menu.h \
     move.h \
     pawn.h \
     queen.h \
