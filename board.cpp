@@ -219,25 +219,61 @@ void Board::move()
 
 
     }
-    //если в начальной клетке есть пешка
-   /* if (cellsToPieces.contains(previousClickedCell))
+    //если в начальной клетке есть фигурка
+    if (cellsToPieces.contains(previousClickedCell) && cellsToPieces[previousClickedCell]->color == turn)
     {
         if (cellsToPieces[previousClickedCell]->name == "Knight") {
             if (cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell)) {
-                //походи
+                if (cellsToPieces.contains(clickedCell)) {
+                    if (cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color)  {
+
+                     //pohodi
+                    }
+                }
+                else {
+
+                    //pohodi
+                }
             }
         }
         else if (cellsToPieces[previousClickedCell]->name == "Pawn") {
             if (abs(previousClickedCell->column - clickedCell->column) == abs(previousClickedCell->row - clickedCell->row) )
             {
                     if (cellsToPieces.contains(clickedCell))
-                        static_cast<Pawn*>(cellsToPieces[clickedCell])->forpawn = true;
+                        static_cast<Pawn*>(cellsToPieces[previousClickedCell])->forpawn = true;
                     else
-                        static_cast<Pawn*>(cellsToPieces[clickedCell])->forpawn = false;
+                        static_cast<Pawn*>(cellsToPieces[previousClickedCell])->forpawn = false;
             }
+            if (cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell) &&
+                    wayIsFree(previousClickedCell, clickedCell)) {
+                if (cellsToPieces.contains(clickedCell)) {
+                    if (cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color)  {
 
+                     //pohodi
+                    }
+                }
+                else {
+
+                    //pohodi
+                }
+            }
         }
-    }*/
+        else {
+            if (cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell) &&
+                    wayIsFree(previousClickedCell, clickedCell)) {
+                if (cellsToPieces.contains(clickedCell)) {
+                    if (cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color)  {
+                        int t;
+                     //pohodi
+                    }
+                }
+                else {
+                    int t;
+                    //pohodi
+                }
+            }
+        }
+    }
 }
 
 bool Board::wayIsFree(Cell * start, Cell * end) {
