@@ -129,6 +129,10 @@ void Board::move()
             //если клетка не пустая и в ней фигурка другого цвета
 
 
+            if (cellsToPieces[previousClickedCell]->name == "Pawn") {
+
+                            static_cast<Pawn*>(cellsToPieces[previousClickedCell])->forpawn = true;}
+
             if (cellsToPieces[clickedCell]->name  == "King")
             {
                 qDebug() << "Shah" << Qt :: endl;

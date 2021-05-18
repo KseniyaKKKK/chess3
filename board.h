@@ -11,7 +11,7 @@
 #include "queen.h"
 #include "bishop.h"
 #include "move.h"
-#include "menu.h"
+//#include "menu.h"
 
 class Board :  public QGraphicsScene
 {

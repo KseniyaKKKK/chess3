@@ -11,7 +11,7 @@ public:
     virtual bool figureCanMove(const Cell * start, const Cell * end) override;
     bool hasMoved = false;
 
-    bool forpawn = true;
+    bool forpawn = false;
 };
 
 #endif // PAWN_H
