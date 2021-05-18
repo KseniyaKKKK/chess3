@@ -12,6 +12,7 @@
 #include "bishop.h"
 #include "move.h"
 //#include "menu.h"
+#include <QPushButton>
 
 class Board :  public QGraphicsScene
 {
@@ -19,9 +20,18 @@ class Board :  public QGraphicsScene
     Cell cells[8][8];
     QMap<Cell*, ChessPiece *> cellsToPieces;
     bool turn = true;
+    bool shah(bool color);
+    std::pair<Cell *, bool> pawnAtEnd(bool color);
+    void replacePawn();
+    QPushButton *b1 = new QPushButton("Ферзь");
+    QPushButton *b2 = new QPushButton("Ладья");
+    QPushButton *b3 = new QPushButton("Конь");
+    QPushButton *b4 = new QPushButton("Слон");
+    QPushButton *n = new QPushButton("Шах");
 virtual void mousePressEvent(QGraphicsSceneMouseEvent *) override;
     bool wayIsFree(Cell * start, Cell * end);
     bool compColor = false;
+    Cell* pawnToReplace;
 public:
     Board();
     Cell * clickedCell;
@@ -38,6 +48,11 @@ public slots:
     void move();
     void setBlackCompColor();
     void setWhiteCompColor();
+    void addQueen();
+    void addKnight();
+    void addRook();
+    void addBishop();
+    void closeShahWindow();
 signals:
     void secondClick();
     void compMove();

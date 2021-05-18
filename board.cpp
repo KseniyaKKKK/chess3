@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QGraphicsSceneMouseEvent>
 #include <QVector>
+#include <QPushButton>
 
 Board::Board()
 {
@@ -108,16 +109,16 @@ void Board::addFigures()
 
 void Board::move()
 {
-    if (turn == compColor) {
-        if (clickedCell != NULL) {
-            clickedCell->setBrush(Qt::transparent);
-        }
+//    if (turn == compColor) {
+//        if (clickedCell != NULL) {
+//            clickedCell->setBrush(Qt::transparent);
+//        }
 
-        possibleMoves = getPossibleMoves(turn);
-        int index = rand() % possibleMoves.length();
-        previousClickedCell = possibleMoves[index].start;
-        clickedCell = possibleMoves[index].end;
-    }
+//        possibleMoves = getPossibleMoves(turn);
+//        int index = rand() % possibleMoves.length();
+//        previousClickedCell = possibleMoves[index].start;
+//        clickedCell = possibleMoves[index].end;
+//    }
 
 //    if (cellsToPieces.contains(previousClickedCell) &&
 //            cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell) &&
@@ -349,10 +350,24 @@ void Board::move()
         }
     }
 
-    if (compColor == turn) {
-        emit compMove();
-
+    std::pair<Cell*, bool> temp = this->pawnAtEnd(!turn);
+    if (temp.second) {
+        qDebug() << "doshla" << Qt::endl;
+        pawnToReplace = temp.first;
+        this->replacePawn();
     }
+
+    if (this->shah(turn)) {
+        qDebug() << "shah" << Qt::endl;
+        n->setGeometry(0,0,800,800);
+        this->addWidget(n);
+        QObject::connect(n, &QPushButton::clicked, this, &Board::closeShahWindow);
+    }
+
+//    if (compColor == turn) {
+//        emit compMove();
+
+//    }
 }
 
 bool Board::wayIsFree(Cell * start, Cell * end) {
@@ -458,5 +473,103 @@ void Board::setWhiteCompColor() {
     compColor = true;
 }
 
+void Board::addQueen()
+{
+    cellsToPieces[pawnToReplace]->setPixmap(QPixmap());
+    cellsToPieces.remove(pawnToReplace);
+    cellsToPieces[pawnToReplace] = new Queen(pawnToReplace->x(), pawnToReplace->y(), !turn);
+    this->addItem(cellsToPieces.value(pawnToReplace));
+    b1->hide();
+    b2->hide();
+    b3->hide();
+    b4->hide();
+}
 
+void Board::addRook()
+{
+    cellsToPieces[pawnToReplace]->setPixmap(QPixmap());
+    cellsToPieces.remove(pawnToReplace);
+    cellsToPieces[pawnToReplace] = new Rook(pawnToReplace->x(), pawnToReplace->y(), !turn);
+    this->addItem(cellsToPieces.value(pawnToReplace));
+    b1->hide();
+    b2->hide();
+    b3->hide();
+    b4->hide();
+}
+
+void Board::addKnight()
+{
+    cellsToPieces[pawnToReplace]->setPixmap(QPixmap());
+    cellsToPieces.remove(pawnToReplace);
+    cellsToPieces[pawnToReplace] = new Knight(pawnToReplace->x(), pawnToReplace->y(), !turn);
+    this->addItem(cellsToPieces.value(pawnToReplace));
+    b1->hide();
+    b2->hide();
+    b3->hide();
+    b4->hide();
+}
+
+void Board::addBishop()
+{
+    cellsToPieces[pawnToReplace]->setPixmap(QPixmap());
+    cellsToPieces.remove(pawnToReplace);
+    cellsToPieces[pawnToReplace] = new Bishop(pawnToReplace->x(), pawnToReplace->y(), !turn);
+    this->addItem(cellsToPieces.value(pawnToReplace));
+    b1->hide();
+    b2->hide();
+    b3->hide();
+    b4->hide();
+}
+
+void Board::closeShahWindow()
+{
+    n->hide();
+}
+
+
+bool Board::shah(bool color) {
+    Cell * kingCell;
+    for (auto it = cellsToPieces.begin(); it != cellsToPieces.end(); ++it) {
+        if (it.value()->color == color && it.value()->name == "King") {
+            kingCell = it.key();
+        }
+    }
+
+    for (auto it = cellsToPieces.begin(); it != cellsToPieces.end(); ++it) {
+        if (it.value()->color != color) {
+            if (cellsToPieces[it.key()]->figureCanMove(it.key(), kingCell) &&
+                    wayIsFree(it.key(), kingCell)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+std::pair<Cell *, bool> Board::pawnAtEnd(bool color) {
+    for (auto it = cellsToPieces.begin(); it != cellsToPieces.end(); ++it) {
+        if (it.value()->color == color && it.value()->name == "Pawn") {
+            if ((it.value()->color && it.key()->row == 0) || (!it.value()->color && it.key()->row == 7)) {
+                return std::make_pair(it.key(), true);
+            }
+        }
+    }
+    return std::make_pair(nullptr, false);
+}
+
+void Board::replacePawn()
+{
+    QObject::connect(b1, &QPushButton::clicked, this, &Board::addQueen);
+    b1->setGeometry(0,0,800,200);
+    this->addWidget(b1);
+    QObject::connect(b2, &QPushButton::clicked, this, &Board::addRook);
+    b2->setGeometry(0,200,800,200);
+    this->addWidget(b2);
+    QObject::connect(b3, &QPushButton::clicked, this, &Board::addKnight);
+    b3->setGeometry(0,400,800,200);
+    this->addWidget(b3);
+    QObject::connect(b4, &QPushButton::clicked, this, &Board::addBishop);
+    b4->setGeometry(0,600,800,200);
+    this->addWidget(b4);
+}
 
