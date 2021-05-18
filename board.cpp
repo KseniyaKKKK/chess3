@@ -5,7 +5,6 @@
 
 Board::Board()
 {
-    menu = new Menu();
     mouseWasPressed = false;
     previousClickedCell = NULL;
     clickedCell = NULL;
@@ -110,7 +109,10 @@ void Board::addFigures()
 void Board::move()
 {
     if (turn == compColor) {
-        clickedCell->setBrush(Qt::transparent);
+        if (clickedCell != NULL) {
+            clickedCell->setBrush(Qt::transparent);
+        }
+
         possibleMoves = getPossibleMoves(turn);
         int index = rand() % possibleMoves.length();
         previousClickedCell = possibleMoves[index].start;
@@ -343,6 +345,13 @@ QVector<Move> Board::getPossibleMoves(bool color) {
     return result;
 }
 
+void Board::setBlackCompColor() {
+    compColor = false;
+}
+
+void Board::setWhiteCompColor() {
+    compColor = true;
+}
 
 
 

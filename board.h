@@ -34,9 +34,10 @@ public:
     int countSum(bool color);
     QVector<Move> possibleMoves;
     QVector<Move> getPossibleMoves(bool color);
-    Menu *menu;
 public slots:
     void move();
+    void setBlackCompColor();
+    void setWhiteCompColor();
 signals:
     void secondClick();
     void compMove();
