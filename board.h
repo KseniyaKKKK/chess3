@@ -44,6 +44,7 @@ public:
     int countSum(bool color);
     QVector<Move> possibleMoves;
     QVector<Move> getPossibleMoves(bool color);
+    bool withComp = true;
 public slots:
     void move();
     void setBlackCompColor();

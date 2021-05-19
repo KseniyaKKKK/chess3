@@ -109,114 +109,17 @@ void Board::addFigures()
 
 void Board::move()
 {
-//    if (turn == compColor) {
-//        if (clickedCell != NULL) {
-//            clickedCell->setBrush(Qt::transparent);
-//        }
+    if (withComp && turn == compColor) {
+            if (clickedCell != NULL) {
+                clickedCell->setBrush(Qt::transparent);
+            }
 
-//        possibleMoves = getPossibleMoves(turn);
-//        int index = rand() % possibleMoves.length();
-//        previousClickedCell = possibleMoves[index].start;
-//        clickedCell = possibleMoves[index].end;
-//    }
+            possibleMoves = getPossibleMoves(turn);
+            int index = rand() % possibleMoves.length();
+            previousClickedCell = possibleMoves[index].start;
+            clickedCell = possibleMoves[index].end;
+        }
 
-//    if (cellsToPieces.contains(previousClickedCell) &&
-//            cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell) &&
-//            (typeid(cellsToPieces[previousClickedCell]).name() != "Knight"  && wayIsFree(previousClickedCell, clickedCell))
-//            && turn == cellsToPieces[previousClickedCell]->color)
-//    {
-//        if (cellsToPieces.contains(clickedCell) && cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color)
-//        {
-//            //если клетка не пустая и в ней фигурка другого цвета
-
-
-//            if (cellsToPieces[previousClickedCell]->name == "Pawn") {
-
-//                            static_cast<Pawn*>(cellsToPieces[previousClickedCell])->forpawn = true;}
-
-//            if (cellsToPieces[clickedCell]->name  == "King")
-//            {
-//                qDebug() << "Shah" << Qt :: endl;
-//            }
-
-//            else
-//            {
-//                cellsToPieces[clickedCell]->setPixmap(QPixmap());
-//                cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
-//                cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
-//                cellsToPieces.remove(previousClickedCell);
-//                turn = !turn;
-//            }
-
-//        }
-
-//        else if (!cellsToPieces.contains(clickedCell))
-//        {
-//            // если пустая клетка
-//            cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
-//            cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
-//            cellsToPieces.remove(previousClickedCell);
-//            turn = !turn;
-//        }
-
-
-
-//     if (cellsToPieces[clickedCell]->name  == "King" && cellsToPieces[previousClickedCell]->name  == "Rook")
-//        {
-//              //qDebug() << "DDDDDDDDDDDDDDD"<< Qt ::endl;
-//              if ( (static_cast<Rook*>(cellsToPieces[clickedCell]) -> FirstMoveRook == false) && (static_cast<King*>(cellsToPieces[clickedCell]) ->FirstMoveKing == false))
-//              {
-//                  if (turn == cellsToPieces[previousClickedCell]->color && turn == cellsToPieces[clickedCell]->color)
-//                  {
-//                       if (previousClickedCell->column == 0)
-//                       {
-//                           cellsToPieces[previousClickedCell]->setPos((&cells[3][7])->pos());
-//                           cellsToPieces.insert(&cells[3][7], cellsToPieces[previousClickedCell]);
-//                           cellsToPieces[clickedCell]->setPos((&cells[2][7])->pos());
-//                           cellsToPieces.insert(&cells[2][7], cellsToPieces[clickedCell]);
-//                           cellsToPieces.remove(previousClickedCell);
-//                           cellsToPieces.remove(clickedCell);
-//                        }
-
-//                        else
-//                        {
-//                           cellsToPieces[previousClickedCell]->setPos((&cells[5][7])->pos());
-//                           cellsToPieces[clickedCell]->setPos((&cells[6][7])->pos());
-//                           cellsToPieces.insert(&cells[6][7], cellsToPieces[clickedCell]);
-//                           cellsToPieces.insert(&cells[5][7], cellsToPieces[previousClickedCell]);
-//                           cellsToPieces.remove(previousClickedCell);
-//                           cellsToPieces.remove(clickedCell);
-//                        }
-//                   }
-
-//                   else
-//                   {
-//                      if (previousClickedCell->column == 0)
-//                      {
-//                          cellsToPieces[previousClickedCell]->setPos((&cells[3][0])->pos());
-//                          cellsToPieces[clickedCell]->setPos((&cells[2][0])->pos());
-//                          cellsToPieces.insert(&cells[2][0], cellsToPieces[clickedCell]);
-//                          cellsToPieces.insert(&cells[3][0], cellsToPieces[previousClickedCell]);
-//                          cellsToPieces.remove(previousClickedCell);
-//                          cellsToPieces.remove(clickedCell);
-//                       }
-
-//                       else
-//                       {
-//                          cellsToPieces[previousClickedCell]->setPos((&cells[5][0])->pos());
-//                          cellsToPieces[clickedCell]->setPos((&cells[6][0])->pos());
-//                          cellsToPieces.insert(&cells[6][0], cellsToPieces[clickedCell]);
-//                          cellsToPieces.insert(&cells[5][0], cellsToPieces[previousClickedCell]);
-//                          cellsToPieces.remove(previousClickedCell);
-//                          cellsToPieces.remove(clickedCell);
-//                       }
-//                    }
-//                }
-//        }
-//                ////////////////////////////////////////////////
-
-
-//    }
     //если в начальной клетке есть фигурка
     if (cellsToPieces.contains(previousClickedCell) && cellsToPieces[previousClickedCell]->color == turn)
     {
@@ -406,10 +309,9 @@ void Board::move()
         QObject::connect(n, &QPushButton::clicked, this, &Board::closeShahWindow);
     }
 
-//    if (compColor == turn) {
-//        emit compMove();
-
-//    }
+    if (withComp && compColor == turn) {
+        emit compMove();
+    }
 }
 
 bool Board::wayIsFree(Cell * start, Cell * end) {
