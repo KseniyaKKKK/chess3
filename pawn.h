@@ -12,6 +12,8 @@ public:
     bool hasMoved = false;
 
     bool forpawn = false;
+
+    bool taking_on_the_aisle = false;
 };
 
 #endif // PAWN_H

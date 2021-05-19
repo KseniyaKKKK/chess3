@@ -244,6 +244,48 @@ void Board::move()
             }
         }
         else if (cellsToPieces[previousClickedCell]->name == "Pawn") {
+            ////////////////
+
+
+       if ((abs(previousClickedCell->column - clickedCell->column) == abs(previousClickedCell->row - clickedCell->row)) && !cellsToPieces.contains(clickedCell) ){
+              qDebug() << "1111111111111" << Qt :: endl;
+              if (cellsToPieces.contains(&cells[previousClickedCell->column + 1][previousClickedCell->row]) ||
+                  cellsToPieces.contains(&cells[previousClickedCell->column - 1][previousClickedCell->row])){
+                        qDebug() << "222222222222222" << Qt :: endl;
+
+                       if ( ((cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->name == "Pawn") &&
+            (cellsToPieces[previousClickedCell]->color != cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->color))
+
+                          )   {
+                               qDebug() << "33333333333333333" << Qt :: endl;
+                               static_cast<Pawn*>(cellsToPieces[previousClickedCell])-> taking_on_the_aisle = true;
+
+                               cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->setPixmap(QPixmap());
+                               cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+                               cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                               cellsToPieces.remove(previousClickedCell);
+                               turn = !turn;
+                        }
+                       else if ((cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]]->name == "Pawn") &&
+                                 (cellsToPieces[previousClickedCell]->color != cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]]->color))
+                       {
+                               static_cast<Pawn*>(cellsToPieces[previousClickedCell])-> taking_on_the_aisle = true;
+                               qDebug() << "444444444444444444444444" << Qt :: endl;
+
+                               cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]]->setPixmap(QPixmap());
+                               cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+                               cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                               cellsToPieces.remove(previousClickedCell);
+                               turn = !turn;
+                       }
+               }
+              else {
+                  static_cast<Pawn*>(cellsToPieces[previousClickedCell])-> taking_on_the_aisle = false;
+              }
+         }
+
+
+            /////////////////
             if (abs(previousClickedCell->column - clickedCell->column) == abs(previousClickedCell->row - clickedCell->row) )
             {
                     if (cellsToPieces.contains(clickedCell))

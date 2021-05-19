@@ -30,15 +30,27 @@ bool Pawn::figureCanMove(const Cell *start, const Cell *end)
         {
             if (!this->color && end->row - start->row == 1 && forpawn == true)
             {
-                //forpawn = false;
                 return true;
             }
 
             else if (this->color && start->row - end->row == 1 && forpawn == true)
             {
-               // forpawn = false;
                 return true;
             }
         }
+
+    //// нужно ещё, чтобы было !hasMoved у соперника
+     if ((abs (start->column - end->column) == abs (start->row - end->row) == 1) && taking_on_the_aisle == true)
+       {
+           if (!this->color && end->row - start->row == 1)
+           {
+               return true;
+           }
+
+           else if (this->color && start->row - end->row == 1)
+           {
+               return true;
+           }
+       }
     return false;
 }
