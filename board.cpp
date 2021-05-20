@@ -306,6 +306,8 @@ void Board::move()
         qDebug() << "shah" << Qt::endl;
         n->setGeometry(0,0,800,800);
         this->addWidget(n);
+        n->show();
+        n->raise();
         QObject::connect(n, &QPushButton::clicked, this, &Board::closeShahWindow);
     }
 
