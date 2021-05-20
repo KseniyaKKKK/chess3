@@ -18,11 +18,15 @@ bool Pawn::figureCanMove(const Cell *start, const Cell *end)
     if ((start->column == end->column))
     {
         if (!this->color &&  (end->row - start->row == 1 || (end->row - start->row == 2 && !hasMoved))) {
+            if (end->row - start->row == 2)
+                TWO++;
             hasMoved = true;
             return true;
         }
         else if (this->color && ((start->row - end->row == 2 && !hasMoved) || start->row - end->row == 1)) {
-             hasMoved = true;
+            if (start->row - end->row == 2)
+                TWO++;
+            hasMoved = true;
             return true;
         }
     }
@@ -38,9 +42,12 @@ bool Pawn::figureCanMove(const Cell *start, const Cell *end)
                 return true;
             }
         }
+    return false;
+}
 
-    //// нужно ещё, чтобы было !hasMoved у соперника
-     if ((abs (start->column - end->column) == abs (start->row - end->row) == 1) && taking_on_the_aisle == true)
+bool Pawn :: P(const Cell * start, const Cell * end, bool two)
+{
+     if ((abs (start->column - end->column) == abs (start->row - end->row) == 1) && taking_on_the_aisle == true && two == true)
        {
            if (!this->color && end->row - start->row == 1)
            {
@@ -52,5 +59,5 @@ bool Pawn::figureCanMove(const Cell *start, const Cell *end)
                return true;
            }
        }
-    return false;
+     return false;
 }

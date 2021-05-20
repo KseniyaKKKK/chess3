@@ -41,6 +41,7 @@ public:
     void addFigures();
     int sumW;
     int sumB;
+    bool two = false;
     int countSum(bool color);
     QVector<Move> possibleMoves;
     QVector<Move> getPossibleMoves(bool color);
