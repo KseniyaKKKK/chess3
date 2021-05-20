@@ -11,7 +11,6 @@
 #include "queen.h"
 #include "bishop.h"
 #include "move.h"
-//#include "menu.h"
 #include <QPushButton>
 
 class Board :  public QGraphicsScene
@@ -19,8 +18,9 @@ class Board :  public QGraphicsScene
     Q_OBJECT
     Cell cells[8][8];
     QMap<Cell*, ChessPiece *> cellsToPieces;
+    QMap<Cell*, ChessPiece *> cellsToPieces2;
     bool turn = true;
-    bool shah(bool color);
+    bool shah(QMap<Cell*, ChessPiece *> t,bool color);
     std::pair<Cell *, bool> pawnAtEnd(bool color);
     void replacePawn();
     QPushButton *b1 = new QPushButton("Ферзь");
@@ -58,6 +58,7 @@ public slots:
 signals:
     void secondClick();
     void compMove();
+    void shahSignal();
 };
 
 #endif // BOARD_H

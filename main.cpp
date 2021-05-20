@@ -12,6 +12,7 @@ public:
     QPushButton * b2;
     QPushButton * b3;
     QGraphicsView * view;
+    QPushButton * b4;
 public slots:
     void setBlackCompColor() {
         b1->hide();
@@ -36,17 +37,28 @@ public slots:
         board->withComp = false;
         board->addFigures();
     }
+    void shah() {
+        board->addWidget(b4);
+        b4->show();
+    }
+    void hideShah() {
+        b4->hide();
+    }
 public:
     Menu(QGraphicsView * view) {
         b1 = new QPushButton("White", view);
         b2 = new QPushButton("Black", view);
         b3 = new QPushButton("1 vs 1", view);
+        b4 = new QPushButton("Шах", view);
         b1->setGeometry(900,150,70,30);
         b2->setGeometry(900,250,70,30);
         b3->setGeometry(900,350,70,30);
+        b4->setGeometry(900,450,70,30);
         connect(b1, &QPushButton::clicked, this, &Menu::setBlackCompColor);
         connect(b2, &QPushButton::clicked, this, &Menu::setWhiteCompColor);
         connect(b3, &QPushButton::clicked, this, &Menu::setOneOnOne);
+        connect(b4, &QPushButton::clicked, this, &Menu::hideShah);
+        connect(board, &Board::shahSignal, this, &Menu::shah);
     }
 };
 
