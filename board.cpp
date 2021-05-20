@@ -218,6 +218,7 @@ void Board::move()
                     turn = !turn;
                 }
             }
+
         }
         else if (cellsToPieces.contains(clickedCell) && cellsToPieces[clickedCell]->name  == "King" && cellsToPieces[previousClickedCell]->name  == "Rook")
                 {
@@ -296,11 +297,11 @@ void Board::move()
     }
 
     std::pair<Cell*, bool> temp = this->pawnAtEnd(!turn);
-    if (temp.second) {
-        qDebug() << "doshla" << Qt::endl;
-        pawnToReplace = temp.first;
-        this->replacePawn();
-    }
+        if (temp.second) {
+            qDebug() << "doshla" << Qt::endl;
+            pawnToReplace = temp.first;
+            this->replacePawn();
+        }
 
     if (this->shah(turn)) {
         qDebug() << "shah" << Qt::endl;
@@ -423,7 +424,7 @@ void Board::addQueen()
 {
     cellsToPieces[pawnToReplace]->setPixmap(QPixmap());
     cellsToPieces.remove(pawnToReplace);
-    cellsToPieces[pawnToReplace] = new Queen(pawnToReplace->x(), pawnToReplace->y(), !turn);
+    cellsToPieces[pawnToReplace] = new Queen(pawnToReplace->x(), pawnToReplace->y(), withComp ? turn : !turn);
     this->addItem(cellsToPieces.value(pawnToReplace));
     b1->hide();
     b2->hide();
@@ -435,7 +436,7 @@ void Board::addRook()
 {
     cellsToPieces[pawnToReplace]->setPixmap(QPixmap());
     cellsToPieces.remove(pawnToReplace);
-    cellsToPieces[pawnToReplace] = new Rook(pawnToReplace->x(), pawnToReplace->y(), !turn);
+    cellsToPieces[pawnToReplace] = new Rook(pawnToReplace->x(), pawnToReplace->y(), withComp ? turn : !turn);
     this->addItem(cellsToPieces.value(pawnToReplace));
     b1->hide();
     b2->hide();
@@ -447,7 +448,7 @@ void Board::addKnight()
 {
     cellsToPieces[pawnToReplace]->setPixmap(QPixmap());
     cellsToPieces.remove(pawnToReplace);
-    cellsToPieces[pawnToReplace] = new Knight(pawnToReplace->x(), pawnToReplace->y(), !turn);
+    cellsToPieces[pawnToReplace] = new Knight(pawnToReplace->x(), pawnToReplace->y(), withComp ? turn : !turn);
     this->addItem(cellsToPieces.value(pawnToReplace));
     b1->hide();
     b2->hide();
@@ -459,7 +460,7 @@ void Board::addBishop()
 {
     cellsToPieces[pawnToReplace]->setPixmap(QPixmap());
     cellsToPieces.remove(pawnToReplace);
-    cellsToPieces[pawnToReplace] = new Bishop(pawnToReplace->x(), pawnToReplace->y(), !turn);
+    cellsToPieces[pawnToReplace] = new Bishop(pawnToReplace->x(), pawnToReplace->y(), withComp ? turn : !turn);
     this->addItem(cellsToPieces.value(pawnToReplace));
     b1->hide();
     b2->hide();
@@ -485,10 +486,13 @@ bool Board::shah(bool color) {
         if (it.value()->color != color) {
             if (cellsToPieces[it.key()]->figureCanMove(it.key(), kingCell) &&
                     wayIsFree(it.key(), kingCell)) {
+                qDebug() << "start" << it.key()->row << " " << it.key()->column << Qt::endl;
+                qDebug() << "end" << kingCell->row << " " << kingCell->column << Qt::endl;
                 return true;
             }
         }
     }
+
     return false;
 }
 
@@ -508,14 +512,18 @@ void Board::replacePawn()
     QObject::connect(b1, &QPushButton::clicked, this, &Board::addQueen);
     b1->setGeometry(0,0,800,200);
     this->addWidget(b1);
+    b1->show();
     QObject::connect(b2, &QPushButton::clicked, this, &Board::addRook);
     b2->setGeometry(0,200,800,200);
     this->addWidget(b2);
+    b2->show();
     QObject::connect(b3, &QPushButton::clicked, this, &Board::addKnight);
     b3->setGeometry(0,400,800,200);
+    b3->show();
     this->addWidget(b3);
     QObject::connect(b4, &QPushButton::clicked, this, &Board::addBishop);
     b4->setGeometry(0,600,800,200);
+    b4->show();
     this->addWidget(b4);
 }
 
