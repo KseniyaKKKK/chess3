@@ -285,7 +285,7 @@ void Board::move()
                       {
                           if (turn == cellsToPieces[previousClickedCell]->color && turn == cellsToPieces[clickedCell]->color)
                           {
-                               if (previousClickedCell->column == 0)
+                               if (previousClickedCell->column == 0 && previousClickedCell->row == 7)
                                {
                                     //pohodi
                                    cellsToPieces2 = cellsToPieces;
@@ -304,7 +304,7 @@ void Board::move()
                                    }
                                 }
 
-                                else
+                                else if (previousClickedCell->column == 7 && previousClickedCell->row == 7)
                                 {
                                     //pohodi
                                    cellsToPieces2 = cellsToPieces;
@@ -322,11 +322,8 @@ void Board::move()
                                    turn = !turn;
                                    }
                                 }
-                           }
 
-                           else
-                           {
-                              if (previousClickedCell->column == 0)
+                              else if (previousClickedCell->column == 0 && previousClickedCell->row == 0)
                               {
                                   //pohodi
                                   cellsToPieces2 = cellsToPieces;
@@ -345,7 +342,7 @@ void Board::move()
                                   }
                                }
 
-                               else
+                               else if (previousClickedCell->column == 7 && previousClickedCell->row == 0)
                                {
                                   //pohodi
                                   cellsToPieces2 = cellsToPieces;
