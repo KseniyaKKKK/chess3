@@ -115,6 +115,18 @@ void Board::move()
             }
 
             possibleMoves = getPossibleMoves(turn);
+            if (possibleMoves.length() == 0) {
+                if (this->shah(cellsToPieces,turn)) {
+                    qDebug() << "mat" << Qt::endl;
+                    emit mat();
+                    return;
+                }
+                else {
+                    qDebug() << "pat" << Qt::endl;
+                    emit pat();
+                    return;
+                }
+            }
             int index = rand() % possibleMoves.length();
             previousClickedCell = possibleMoves[index].start;
             clickedCell = possibleMoves[index].end;
@@ -413,6 +425,9 @@ void Board::move()
         qDebug() << "shah" << Qt::endl;
         emit shahSignal();
     }
+    else {
+        emit hideShah();
+    }
 
     if (withComp && compColor == turn) {
         emit compMove();
@@ -504,9 +519,14 @@ QVector<Move> Board::getPossibleMoves(bool color) {
         if (it.value()->color == color) {
             for (int i = 0; i < 8; ++i) {
                 for (int j = 0; j < 8; ++j) {
+                    cellsToPieces2 = cellsToPieces;
+                    cellsToPieces2.detach();
+                    cellsToPieces2.insert(&cells[i][j], cellsToPieces[it.key()]);
+                    cellsToPieces2.remove(it.key());
                     if (cellsToPieces[it.key()]->figureCanMove(it.key(), &cells[i][j]) &&
                             (typeid(cellsToPieces[it.key()]).name() != "Knight"  && wayIsFree(it.key(), &cells[i][j])) &&
-                            ((cellsToPieces.contains(&cells[i][j]) && cellsToPieces[it.key()]->color != cellsToPieces[&cells[i][j]]->color) || !cellsToPieces.contains(&cells[i][j]))) {
+                            ((cellsToPieces.contains(&cells[i][j]) && cellsToPieces[it.key()]->color != cellsToPieces[&cells[i][j]]->color) || !cellsToPieces.contains(&cells[i][j]))
+                            && !shah(cellsToPieces2, turn)) {
                         result.push_back({it.key(), &cells[i][j]});
                         //qDebug() << it.key()->row << " " << it.key()->column << " - " << (&cells[i][j])->row << " " << (&cells[i][j])->column << Qt::endl;
                     }

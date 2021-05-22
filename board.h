@@ -59,6 +59,9 @@ signals:
     void secondClick();
     void compMove();
     void shahSignal();
+    void hideShah();
+    void pat();
+    void mat();
 };
 
 #endif // BOARD_H
