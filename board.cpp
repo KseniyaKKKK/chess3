@@ -453,21 +453,57 @@ bool Board::wayIsFree(Cell * start, Cell * end) {
         }
     }
 
+//    else if (abs(start->column - end->column) == abs(start->row  - end->row))
+//    {
+//       if (start->column >= end->column) {
+//           if (start->row >= end->row) {
+//               for (int i = 1; i < start->column - end->column; ++i)
+//               {
+//                   temp.push_back(&cells[start->column - i - 1][start->row - i - 1]);
+//                   qDebug() << "1111111111      "<<start->column - i - 1 << " - " << start->row - i -1 << Qt::endl;
+//               }
+//           }
+//           else if (start->row < end->row){
+//               for (int i = 1; i < start->column - end->column; ++i)
+//               {
+//                   temp.push_back(&cells[end->column + i][start->row + i]);
+//                   qDebug() <<  "22222222222      "<<end->column + i << " - " << start -> row + i << Qt::endl;
+//               }
+//           }
+//       }
+//       else {
+//           if (start->row >= end->row) {
+//               for (int i = 1; i < end->column - start->column; ++i)
+//               {
+//                   temp.push_back(&cells[start->column + i][end->row + i]);
+//                   qDebug() <<  "33333333333      "<<start->column + i << " - " << end -> row + i << Qt::endl;
+//               }
+//           }
+//           else {
+//               for (int i = 1; i < end->column - start->column; ++i)
+//               {
+//                   temp.push_back(&cells[start->column + i][start->row + i]);
+//                   qDebug() <<  "4444444444444     "<<start->column + i << " - " << start -> row + i << Qt::endl;
+//               }
+//           }
+//       }
     else if (abs(start->column - end->column) == abs(start->row  - end->row))
     {
        if (start->column >= end->column) {
            if (start->row >= end->row) {
                for (int i = 1; i < start->column - end->column; ++i)
                {
-                   temp.push_back(&cells[start->column - i - 1][start->row - i - 1]);
-                   qDebug() << "1111111111      "<<start->column - i - 1 << " - " << start->row - i -1 << Qt::endl;
+                   temp.push_back(&cells[start->column - i][start->row - i]);
+                   qDebug() << "1111111111      "<<start->column - i << " - " << start->row - i << Qt::endl;
+                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
                }
            }
            else if (start->row < end->row){
                for (int i = 1; i < start->column - end->column; ++i)
                {
-                   temp.push_back(&cells[end->column + i][start->row + i]);
-                   qDebug() <<  "22222222222      "<<end->column + i << " - " << start -> row + i << Qt::endl;
+                   temp.push_back(&cells[end->column + i][end->row - i]);
+                   qDebug() <<  "22222222222      "<<end->column + i << " - " << end->row - i << Qt::endl;
+                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
                }
            }
        }
@@ -475,15 +511,17 @@ bool Board::wayIsFree(Cell * start, Cell * end) {
            if (start->row >= end->row) {
                for (int i = 1; i < end->column - start->column; ++i)
                {
-                   temp.push_back(&cells[start->column + i][end->row + i]);
-                   qDebug() <<  "33333333333      "<<start->column + i << " - " << end -> row + i << Qt::endl;
+                   temp.push_back(&cells[start->column + i][start->row - i]);
+                   qDebug() <<  "33333333333      "<<start->column + i << " - " << start->row - i << Qt::endl;
+                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
                }
            }
            else {
                for (int i = 1; i < end->column - start->column; ++i)
                {
-                   temp.push_back(&cells[start->column + i][start->row + i]);
-                   qDebug() <<  "4444444444444     "<<start->column + i << " - " << start -> row + i << Qt::endl;
+                   temp.push_back(&cells[start->column + i][start->row - i]);
+                   qDebug() <<  "4444444444444     "<<start->column + i << " - " << start->row + i << Qt::endl;
+                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
                }
            }
        }

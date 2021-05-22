@@ -74,6 +74,7 @@ public:
         connect(board, &Board::mat, this, &Menu::mat);
         connect(board, &Board::pat, this, &Menu::pat);
         connect(b5, &QPushButton::clicked, qApp, &QApplication::quit);
+        connect(b6, &QPushButton::clicked, qApp, &QApplication::quit);
     }
 };
 
