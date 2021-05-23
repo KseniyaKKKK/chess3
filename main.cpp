@@ -63,8 +63,8 @@ public:
         b2->setGeometry(900,250,70,30);
         b3->setGeometry(900,350,70,30);
         b4->setGeometry(900,450,70,30);
-        b5->setGeometry(0,0,800,800);
-        b6->setGeometry(0,0,800,800);
+        b5->setGeometry(900,450,70,30);
+        b6->setGeometry(900,450,70,30);
         connect(b1, &QPushButton::clicked, this, &Menu::setBlackCompColor);
         connect(b2, &QPushButton::clicked, this, &Menu::setWhiteCompColor);
         connect(b3, &QPushButton::clicked, this, &Menu::setOneOnOne);
@@ -90,6 +90,9 @@ int main(int argc, char *argv[])
     board->addWidget(menu->b1);
     board->addWidget(menu->b2);
     board->addWidget(menu->b3);
+    board->addWidget(menu->b4);
+    board->addWidget(menu->b5);
+    board->addWidget(menu->b6);
     menu->b4->hide();
     menu->b5->hide();
     menu->b6->hide();

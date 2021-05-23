@@ -30,6 +30,7 @@ class Board :  public QGraphicsScene
     QPushButton *n = new QPushButton("Шах");
 virtual void mousePressEvent(QGraphicsSceneMouseEvent *) override;
     bool wayIsFree(Cell * start, Cell * end);
+    bool wayIsFree2(Cell * start, Cell * end);
     bool compColor = false;
     Cell* pawnToReplace;
 public:

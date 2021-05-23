@@ -9,6 +9,7 @@ Board::Board()
     mouseWasPressed = false;
     previousClickedCell = NULL;
     clickedCell = NULL;
+    possibleMoves.push_back({nullptr, nullptr});
     connect(this, &Board::secondClick, this, &Board::move);
     connect(this, &Board::compMove, this, &Board::move);
 }
@@ -50,7 +51,6 @@ void Board::drawCells()
         }
     }
 }
-
 
 void Board::addFigures()
 {
@@ -105,11 +105,12 @@ void Board::addFigures()
     }
 }
 
-
-
 void Board::move()
 {
-    if (withComp && turn == compColor) {
+
+
+   if (withComp && turn == compColor)
+    {
             if (clickedCell != NULL) {
                 clickedCell->setBrush(Qt::transparent);
             }
@@ -127,10 +128,11 @@ void Board::move()
                     return;
                 }
             }
+
             int index = rand() % possibleMoves.length();
             previousClickedCell = possibleMoves[index].start;
             clickedCell = possibleMoves[index].end;
-        }
+    }
 
     //если в начальной клетке есть фигурка
     if (cellsToPieces.contains(previousClickedCell) && cellsToPieces[previousClickedCell]->color == turn)
@@ -338,8 +340,8 @@ void Board::move()
                               else if (previousClickedCell->column == 0 && previousClickedCell->row == 0)
                               {
                                   //pohodi
-                                  cellsToPieces2 = cellsToPieces;
-                                  cellsToPieces2.detach();
+                                   cellsToPieces2 = cellsToPieces;
+                                   cellsToPieces2.detach();
                                   cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
                                   cellsToPieces2.remove(previousClickedCell);
                                   if (!shah(cellsToPieces2, turn)) {
@@ -357,8 +359,8 @@ void Board::move()
                                else if (previousClickedCell->column == 7 && previousClickedCell->row == 0)
                                {
                                   //pohodi
-                                  cellsToPieces2 = cellsToPieces;
-                                  cellsToPieces2.detach();
+                                   cellsToPieces2 = cellsToPieces;
+                                   cellsToPieces2.detach();
                                   cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
                                   cellsToPieces2.remove(previousClickedCell);
                                   if (!shah(cellsToPieces2, turn)) {
@@ -416,7 +418,7 @@ void Board::move()
 
     std::pair<Cell*, bool> temp = this->pawnAtEnd(!turn);
         if (temp.second) {
-            qDebug() << "doshla" << Qt::endl;
+            //qDebug() << "doshla" << Qt::endl;
             pawnToReplace = temp.first;
             this->replacePawn();
         }
@@ -452,41 +454,6 @@ bool Board::wayIsFree(Cell * start, Cell * end) {
             temp.push_back(&cells[i][end->row]);
         }
     }
-
-//    else if (abs(start->column - end->column) == abs(start->row  - end->row))
-//    {
-//       if (start->column >= end->column) {
-//           if (start->row >= end->row) {
-//               for (int i = 1; i < start->column - end->column; ++i)
-//               {
-//                   temp.push_back(&cells[start->column - i - 1][start->row - i - 1]);
-//                   qDebug() << "1111111111      "<<start->column - i - 1 << " - " << start->row - i -1 << Qt::endl;
-//               }
-//           }
-//           else if (start->row < end->row){
-//               for (int i = 1; i < start->column - end->column; ++i)
-//               {
-//                   temp.push_back(&cells[end->column + i][start->row + i]);
-//                   qDebug() <<  "22222222222      "<<end->column + i << " - " << start -> row + i << Qt::endl;
-//               }
-//           }
-//       }
-//       else {
-//           if (start->row >= end->row) {
-//               for (int i = 1; i < end->column - start->column; ++i)
-//               {
-//                   temp.push_back(&cells[start->column + i][end->row + i]);
-//                   qDebug() <<  "33333333333      "<<start->column + i << " - " << end -> row + i << Qt::endl;
-//               }
-//           }
-//           else {
-//               for (int i = 1; i < end->column - start->column; ++i)
-//               {
-//                   temp.push_back(&cells[start->column + i][start->row + i]);
-//                   qDebug() <<  "4444444444444     "<<start->column + i << " - " << start -> row + i << Qt::endl;
-//               }
-//           }
-//       }
     else if (abs(start->column - end->column) == abs(start->row  - end->row))
     {
        if (start->column >= end->column) {
@@ -494,16 +461,16 @@ bool Board::wayIsFree(Cell * start, Cell * end) {
                for (int i = 1; i < start->column - end->column; ++i)
                {
                    temp.push_back(&cells[start->column - i][start->row - i]);
-                   qDebug() << "1111111111      "<<start->column - i << " - " << start->row - i << Qt::endl;
-                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
+                   //qDebug() << "1111111111      "<<start->column - i << " - " << start->row - i << Qt::endl;
+                   //qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
                }
            }
            else if (start->row < end->row){
                for (int i = 1; i < start->column - end->column; ++i)
                {
                    temp.push_back(&cells[end->column + i][end->row - i]);
-                   qDebug() <<  "22222222222      "<<end->column + i << " - " << end->row - i << Qt::endl;
-                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
+//                   qDebug() <<  "22222222222      "<<end->column + i << " - " << end->row - i << Qt::endl;
+//                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
                }
            }
        }
@@ -512,16 +479,16 @@ bool Board::wayIsFree(Cell * start, Cell * end) {
                for (int i = 1; i < end->column - start->column; ++i)
                {
                    temp.push_back(&cells[start->column + i][start->row - i]);
-                   qDebug() <<  "33333333333      "<<start->column + i << " - " << start->row - i << Qt::endl;
-                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
+//                   qDebug() <<  "33333333333      "<<start->column + i << " - " << start->row - i << Qt::endl;
+//                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
                }
            }
            else {
                for (int i = 1; i < end->column - start->column; ++i)
                {
                    temp.push_back(&cells[start->column + i][start->row - i]);
-                   qDebug() <<  "4444444444444     "<<start->column + i << " - " << start->row + i << Qt::endl;
-                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
+//                   qDebug() <<  "4444444444444     "<<start->column + i << " - " << start->row + i << Qt::endl;
+//                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
                }
            }
        }
@@ -534,6 +501,73 @@ bool Board::wayIsFree(Cell * start, Cell * end) {
     }
     return true;  
 }
+
+bool Board::wayIsFree2(Cell * start, Cell * end) {
+    QVector<Cell*> temp;
+
+    if (start->column == end->column)
+    {
+        for (int i = qMin(start->row, end->row) + 1; i < qMax(start->row, end->row); ++i)
+        {
+            temp.push_back(&cells[end->column][i]);
+        }
+    }
+
+    else if (start->row == end->row)
+    {
+        for (int i = qMin(start->column, end->column) + 1; i < qMax(start->column, end->column); ++i)
+        {
+            temp.push_back(&cells[i][end->row]);
+        }
+    }
+    else if (abs(start->column - end->column) == abs(start->row  - end->row))
+    {
+       if (start->column >= end->column) {
+           if (start->row >= end->row) {
+               for (int i = 1; i < start->column - end->column; ++i)
+               {
+                   temp.push_back(&cells[start->column - i][start->row - i]);
+                   //qDebug() << "1111111111      "<<start->column - i << " - " << start->row - i << Qt::endl;
+                   //qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
+               }
+           }
+           else if (start->row < end->row){
+               for (int i = 1; i < start->column - end->column; ++i)
+               {
+                   temp.push_back(&cells[end->column + i][end->row - i]);
+//                   qDebug() <<  "22222222222      "<<end->column + i << " - " << end->row - i << Qt::endl;
+//                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
+               }
+           }
+       }
+       else {
+           if (start->row >= end->row) {
+               for (int i = 1; i < end->column - start->column; ++i)
+               {
+                   temp.push_back(&cells[start->column + i][start->row - i]);
+//                   qDebug() <<  "33333333333      "<<start->column + i << " - " << start->row - i << Qt::endl;
+//                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
+               }
+           }
+           else {
+               for (int i = 1; i < end->column - start->column; ++i)
+               {
+                   temp.push_back(&cells[start->column + i][start->row - i]);
+//                   qDebug() <<  "4444444444444     "<<start->column + i << " - " << start->row + i << Qt::endl;
+//                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
+               }
+           }
+       }
+    }
+
+    for (auto cell : temp)
+    {
+        if (cellsToPieces2.contains(cell))
+            return false;
+    }
+    return true;
+}
+
 
 int Board::countSum(bool color) {
     int sum = 0;
@@ -553,20 +587,25 @@ int Board::countSum(bool color) {
 
 QVector<Move> Board::getPossibleMoves(bool color) {
     QVector<Move> result;
+    qDebug() << "new" << Qt::endl;
     for (auto it = cellsToPieces.begin(); it != cellsToPieces.end(); it++) {
         if (it.value()->color == color) {
             for (int i = 0; i < 8; ++i) {
                 for (int j = 0; j < 8; ++j) {
+                    qDebug() << 1;
                     cellsToPieces2 = cellsToPieces;
                     cellsToPieces2.detach();
+                    qDebug() << 2;
                     cellsToPieces2.insert(&cells[i][j], cellsToPieces[it.key()]);
+                    qDebug() << 3;
                     cellsToPieces2.remove(it.key());
+                    qDebug() << 4;
                     if (cellsToPieces[it.key()]->figureCanMove(it.key(), &cells[i][j]) &&
                             (typeid(cellsToPieces[it.key()]).name() != "Knight"  && wayIsFree(it.key(), &cells[i][j])) &&
                             ((cellsToPieces.contains(&cells[i][j]) && cellsToPieces[it.key()]->color != cellsToPieces[&cells[i][j]]->color) || !cellsToPieces.contains(&cells[i][j]))
                             && !shah(cellsToPieces2, turn)) {
                         result.push_back({it.key(), &cells[i][j]});
-                        //qDebug() << it.key()->row << " " << it.key()->column << " - " << (&cells[i][j])->row << " " << (&cells[i][j])->column << Qt::endl;
+                        qDebug() << it.key()->row << " " << it.key()->column << " - " << (&cells[i][j])->row << " " << (&cells[i][j])->column << Qt::endl;
                     }
                 }
             }
@@ -649,8 +688,8 @@ bool Board::shah(QMap<Cell*, ChessPiece *> pieces, bool color) {
     for (auto it = pieces.begin(); it != pieces.end(); ++it) {
         if (it.value()->color != color) {
             if (pieces[it.key()]->figureCanMove(it.key(), kingCell) &&
-                    wayIsFree(it.key(), kingCell)) {
-                qDebug() << "start" << it.key()->row << " " << it.key()->column << Qt::endl;
+                    wayIsFree2(it.key(), kingCell)) {
+               qDebug() << "start" << it.key()->row << " " << it.key()->column << Qt::endl;
                 qDebug() << "end" << kingCell->row << " " << kingCell->column << Qt::endl;
                 return true;
             }
