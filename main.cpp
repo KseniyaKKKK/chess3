@@ -63,8 +63,8 @@ public:
         b2->setGeometry(900,250,70,30);
         b3->setGeometry(900,350,70,30);
         b4->setGeometry(900,450,70,30);
-        b5->setGeometry(900,450,70,30);
-        b6->setGeometry(900,450,70,30);
+        b5->setGeometry(900,550,70,30);
+        b6->setGeometry(900,550,70,30);
         connect(b1, &QPushButton::clicked, this, &Menu::setBlackCompColor);
         connect(b2, &QPushButton::clicked, this, &Menu::setWhiteCompColor);
         connect(b3, &QPushButton::clicked, this, &Menu::setOneOnOne);

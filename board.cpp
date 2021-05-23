@@ -107,6 +107,32 @@ void Board::addFigures()
 
 void Board::move()
 {
+    if (withComp && turn == compColor)
+    {
+        if (clickedCell != NULL)
+        {
+            clickedCell->setBrush(Qt::transparent);
+        }
+        possibleMoves = getPossibleMoves(turn);
+        if (possibleMoves.length() == 0) {
+            if (this->shah(cellsToPieces,turn))
+            {
+                qDebug() << "mat" << Qt::endl;
+                emit mat();
+                return;
+            }
+            else
+            {
+                qDebug() << "pat" << Qt::endl;
+                emit pat();
+                return;
+            }
+        }
+        int index = rand() % possibleMoves.length();
+        previousClickedCell = possibleMoves[index].start;
+        clickedCell = possibleMoves[index].end;
+    }
+
     possibleMoves = getPossibleMoves(turn);
     if (possibleMoves.length() == 0) {
         if (this->shah(cellsToPieces,turn))
@@ -123,19 +149,7 @@ void Board::move()
         }
     }
 
-   if (withComp && turn == compColor)
-   {
-       if (clickedCell != NULL)
-       {
-           clickedCell->setBrush(Qt::transparent);
-       }
 
-
-
-       int index = rand() % possibleMoves.length();
-       previousClickedCell = possibleMoves[index].start;
-       clickedCell = possibleMoves[index].end;
-   }
 
     //если в начальной клетке есть фигурка
     if (cellsToPieces.contains(previousClickedCell) && cellsToPieces[previousClickedCell]->color == turn)
@@ -637,6 +651,15 @@ QVector<Move> Board::getPossibleMoves(bool color) {
                     qDebug() << 3;
                     cellsToPieces2.remove(it.key());
                     qDebug() << 4;
+                    if (cellsToPieces[it.key()]->name == "Pawn") {
+                        if (abs(it.key()->column - (&cells[i][j])->column) == abs(it.key()->row - (&cells[i][j])->row) )
+                        {
+                            if (cellsToPieces.contains(clickedCell))
+                                static_cast<Pawn*>(cellsToPieces[it.key()])->forpawn = true;
+                            else
+                                static_cast<Pawn*>(cellsToPieces[it.key()])->forpawn = false;
+                        }
+                    }
                     if (cellsToPieces[it.key()]->figureCanMove(it.key(), &cells[i][j]) && wayIsFree2(it.key(), &cells[i][j]) &&
                             ((cellsToPieces.contains(&cells[i][j]) && cellsToPieces[it.key()]->color != cellsToPieces[&cells[i][j]]->color) || !cellsToPieces.contains(&cells[i][j]))
                             && !shah(cellsToPieces2, turn))
@@ -724,6 +747,15 @@ bool Board::shah(QMap<Cell*, ChessPiece *> pieces, bool color) {
 
     for (auto it = pieces.begin(); it != pieces.end(); ++it) {
         if (it.value()->color != color) {
+            if (cellsToPieces[it.key()]->name == "Pawn") {
+                if (abs(it.key()->column - kingCell->column) == abs(it.key()->row - kingCell->row) )
+                {
+                    if (cellsToPieces.contains(clickedCell))
+                        static_cast<Pawn*>(cellsToPieces[it.key()])->forpawn = true;
+                    else
+                        static_cast<Pawn*>(cellsToPieces[it.key()])->forpawn = false;
+                }
+            }
             if (pieces[it.key()]->figureCanMove(it.key(), kingCell) &&
                     wayIsFree2(it.key(), kingCell)) {
                qDebug() << "start" << it.key()->row << " " << it.key()->column << Qt::endl;
