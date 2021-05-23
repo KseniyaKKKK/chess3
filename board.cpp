@@ -107,46 +107,54 @@ void Board::addFigures()
 
 void Board::move()
 {
-
+    possibleMoves = getPossibleMoves(turn);
+    if (possibleMoves.length() == 0) {
+        if (this->shah(cellsToPieces,turn))
+        {
+            qDebug() << "mat" << Qt::endl;
+            emit mat();
+            return;
+        }
+        else
+        {
+            qDebug() << "pat" << Qt::endl;
+            emit pat();
+            return;
+        }
+    }
 
    if (withComp && turn == compColor)
-    {
-            if (clickedCell != NULL) {
-                clickedCell->setBrush(Qt::transparent);
-            }
+   {
+       if (clickedCell != NULL)
+       {
+           clickedCell->setBrush(Qt::transparent);
+       }
 
-            possibleMoves = getPossibleMoves(turn);
-            if (possibleMoves.length() == 0) {
-                if (this->shah(cellsToPieces,turn)) {
-                    qDebug() << "mat" << Qt::endl;
-                    emit mat();
-                    return;
-                }
-                else {
-                    qDebug() << "pat" << Qt::endl;
-                    emit pat();
-                    return;
-                }
-            }
 
-            int index = rand() % possibleMoves.length();
-            previousClickedCell = possibleMoves[index].start;
-            clickedCell = possibleMoves[index].end;
-    }
+
+       int index = rand() % possibleMoves.length();
+       previousClickedCell = possibleMoves[index].start;
+       clickedCell = possibleMoves[index].end;
+   }
 
     //если в начальной клетке есть фигурка
     if (cellsToPieces.contains(previousClickedCell) && cellsToPieces[previousClickedCell]->color == turn)
     {
-        if (cellsToPieces[previousClickedCell]->name == "Knight") {
-            if (cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell)) {
-                if (cellsToPieces.contains(clickedCell)) {
-                    if (cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color)  {
+        if (cellsToPieces[previousClickedCell]->name == "Knight")
+        {
+            if (cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell))
+            {
+                if (cellsToPieces.contains(clickedCell))
+                {
+                    if (cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color)
+                    {
                         cellsToPieces2 = cellsToPieces;
                         cellsToPieces2.detach();
                         cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
                         cellsToPieces2.remove(previousClickedCell);
                         //pohodi
-                        if (!shah(cellsToPieces2, turn)) {
+                        if (!shah(cellsToPieces2, turn))
+                        {
                             qDebug() << 12 << Qt::endl;
                             cellsToPieces[clickedCell]->setPixmap(QPixmap());
                             cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
@@ -156,12 +164,14 @@ void Board::move()
                         }
                     }
                 }
-                else {
+                else
+                {
                     cellsToPieces2 = cellsToPieces;
                     cellsToPieces2.detach();
                     cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
                     cellsToPieces2.remove(previousClickedCell);
-                    if (!shah(cellsToPieces2, turn)) {
+                    if (!shah(cellsToPieces2, turn))
+                    {
                         //pohodi
                         qDebug() << 11 << Qt::endl;
                         cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
@@ -172,244 +182,263 @@ void Board::move()
                 }
             }
         }
-        else if (cellsToPieces[previousClickedCell]->name == "Pawn") {
-                    ////////////////
+        else if (cellsToPieces[previousClickedCell]->name == "Pawn")
+        {
+            if (abs(previousClickedCell->column - clickedCell->column) == abs(previousClickedCell->row - clickedCell->row) )
+            {
+                if (cellsToPieces.contains(clickedCell))
+                    static_cast<Pawn*>(cellsToPieces[previousClickedCell])->forpawn = true;
+                else
+                    static_cast<Pawn*>(cellsToPieces[previousClickedCell])->forpawn = false;
+            }
 
-                    if (abs(previousClickedCell->column - clickedCell->column) == abs(previousClickedCell->row - clickedCell->row) )
+            if ((abs(previousClickedCell->column - clickedCell->column) == abs(previousClickedCell->row - clickedCell->row)) && !cellsToPieces.contains(clickedCell) )
+            {
+                if (cellsToPieces.contains(&cells[previousClickedCell->column + 1][previousClickedCell->row]) ||
+                    cellsToPieces.contains(&cells[previousClickedCell->column - 1][previousClickedCell->row]))
+                {
+                    if  ((cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->name == "Pawn") &&
+                          (cellsToPieces[previousClickedCell]->color != cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->color))
                     {
-                            if (cellsToPieces.contains(clickedCell))
-                                static_cast<Pawn*>(cellsToPieces[previousClickedCell])->forpawn = true;
-                            else
-                                static_cast<Pawn*>(cellsToPieces[previousClickedCell])->forpawn = false;
-                    }
+                        static_cast<Pawn*>(cellsToPieces[previousClickedCell])-> taking_on_the_aisle = true;
+                        two =false;
 
-                    if ((abs(previousClickedCell->column - clickedCell->column) == abs(previousClickedCell->row - clickedCell->row)) && !cellsToPieces.contains(clickedCell) ){
-
-
-
-                      if (cellsToPieces.contains(&cells[previousClickedCell->column + 1][previousClickedCell->row]) ||
-                          cellsToPieces.contains(&cells[previousClickedCell->column - 1][previousClickedCell->row])){
-
-
-                               if  ((cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->name == "Pawn") &&
-                    (cellsToPieces[previousClickedCell]->color != cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->color))  {
-
-                                       static_cast<Pawn*>(cellsToPieces[previousClickedCell])-> taking_on_the_aisle = true;
-        ////////////////////////////////
-                                   two =false;
-
-                                   if (clickedCell->column == (previousClickedCell->column + 1)){
-                                        if (static_cast<Pawn*>(cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]])-> TWO == 2)
-                                            two = true;
-                                   }
-                                   else if (clickedCell->column == (previousClickedCell->column - 1)){
-                                        if (static_cast<Pawn*>(cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]])-> TWO == 2)
-                                            two = true;
-                                    }
-
-        ///////////////////////////////////
-
-                                       if ((static_cast<Pawn*>(cellsToPieces[previousClickedCell])->P(previousClickedCell, clickedCell, two))
-                                               && wayIsFree(previousClickedCell, clickedCell))
-                                                {
-                                            //pohodi
-                                           cellsToPieces2 = cellsToPieces;
-                                           cellsToPieces2.detach();
-                                           cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                                           cellsToPieces2.remove(previousClickedCell);
-                                           if (!shah(cellsToPieces2, turn)) {
-                                               qDebug() << 10 << Qt::endl;
-                                                   cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->setPixmap(QPixmap());
-                                                   cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
-                                                   cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                                                   cellsToPieces.remove(previousClickedCell);
-                                                   turn = !turn;
-                                           }
-                                }
-                               }
-                               else if ((cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]]->name == "Pawn") &&
-                                         (cellsToPieces[previousClickedCell]->color != cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]]->color))
-                               {
-                                       static_cast<Pawn*>(cellsToPieces[previousClickedCell])-> taking_on_the_aisle = true;
-
-                                       if ((static_cast<Pawn*>(cellsToPieces[previousClickedCell])->P(previousClickedCell, clickedCell, two))
-                                               && wayIsFree(previousClickedCell, clickedCell))
-                                                {
-                                            //pohodi
-                                           cellsToPieces2 = cellsToPieces;
-                                           cellsToPieces2.detach();
-                                           cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                                           cellsToPieces2.remove(previousClickedCell);
-                                           if (!shah(cellsToPieces2, turn)) {
-                                               qDebug() << 9 << Qt::endl;
-                                                  cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->setPixmap(QPixmap());
-                                                  cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
-                                                  cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                                                  cellsToPieces.remove(previousClickedCell);
-                                                  turn = !turn;
-                                           }
-                                }
-                             }
-                       }
-                      else {
-                          static_cast<Pawn*>(cellsToPieces[previousClickedCell])-> taking_on_the_aisle = false;
-                      }
-                 }
-
-                    else{
-                    if (cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell) &&
-                            wayIsFree(previousClickedCell, clickedCell)) {
-                        if (cellsToPieces.contains(clickedCell)) {
-                            if ((cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color) && (abs (previousClickedCell->column - clickedCell->column) == abs(clickedCell->row - previousClickedCell->row)))  {
-                                 //pohodi
-                                cellsToPieces2 = cellsToPieces;
-                                cellsToPieces2.detach();
-                                cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                                cellsToPieces2.remove(previousClickedCell);
-                                if (!shah(cellsToPieces2, turn)) {
-                                qDebug() << 8 << Qt::endl;
-                                cellsToPieces[clickedCell]->setPixmap(QPixmap());
-                                cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
-                                cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                                cellsToPieces.remove(previousClickedCell);
-                                turn = !turn;
-                                }
-                            }
+                        if (clickedCell->column == (previousClickedCell->column + 1))
+                        {
+                             if (static_cast<Pawn*>(cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]])-> TWO == 2)
+                                 two = true;
                         }
-                        else  {
+                        else if (clickedCell->column == (previousClickedCell->column - 1))
+                        {
+                             if (static_cast<Pawn*>(cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]])-> TWO == 2)
+                                 two = true;
+                        }
+                        if ((static_cast<Pawn*>(cellsToPieces[previousClickedCell])->P(previousClickedCell, clickedCell, two))
+                                && wayIsFree(previousClickedCell, clickedCell))
+                        {
                              //pohodi
                             cellsToPieces2 = cellsToPieces;
                             cellsToPieces2.detach();
                             cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
                             cellsToPieces2.remove(previousClickedCell);
-                            if (!shah(cellsToPieces2, turn)) {
+                            if (!shah(cellsToPieces2, turn))
+                            {
+                                qDebug() << 10 << Qt::endl;
+                                static_cast<Pawn*>(cellsToPieces[previousClickedCell])->hasMoved = true;
+                                cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->setPixmap(QPixmap());
+                                cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+                                cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                                cellsToPieces.remove(previousClickedCell);
+                                turn = !turn;
+                            }
+                        }
+                    }
+                    else if ((cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]]->name == "Pawn") &&
+                              (cellsToPieces[previousClickedCell]->color != cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]]->color))
+                    {
+                        static_cast<Pawn*>(cellsToPieces[previousClickedCell])-> taking_on_the_aisle = true;
+
+                        if ((static_cast<Pawn*>(cellsToPieces[previousClickedCell])->P(previousClickedCell, clickedCell, two))
+                                && wayIsFree(previousClickedCell, clickedCell))
+                        {
+                             //pohodi
+                            cellsToPieces2 = cellsToPieces;
+                            cellsToPieces2.detach();
+                            cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                            cellsToPieces2.remove(previousClickedCell);
+                            if (!shah(cellsToPieces2, turn))
+                            {
+                                qDebug() << 9 << Qt::endl;
+                                static_cast<Pawn*>(cellsToPieces[previousClickedCell])->hasMoved = true;
+                                cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->setPixmap(QPixmap());
+                                cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+                                cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                                cellsToPieces.remove(previousClickedCell);
+                                turn = !turn;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    static_cast<Pawn*>(cellsToPieces[previousClickedCell])-> taking_on_the_aisle = false;
+                }
+            }
+
+            else
+            {
+                if (cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell) &&
+                        wayIsFree(previousClickedCell, clickedCell))
+                {
+                    if (cellsToPieces.contains(clickedCell))
+                    {
+                        if ((cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color) && (abs (previousClickedCell->column - clickedCell->column) == abs(clickedCell->row - previousClickedCell->row)))
+                        {
+                             //pohodi
+                            cellsToPieces2 = cellsToPieces;
+                            cellsToPieces2.detach();
+                            cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                            cellsToPieces2.remove(previousClickedCell);
+                            if (!shah(cellsToPieces2, turn))
+                            {
+                                qDebug() << 8 << Qt::endl;
+                                static_cast<Pawn*>(cellsToPieces[previousClickedCell])->hasMoved = true;
+                                cellsToPieces[clickedCell]->setPixmap(QPixmap());
+                                cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+                                cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                                cellsToPieces.remove(previousClickedCell);
+                                turn = !turn;
+                            }
+                        }
+                    }
+                    else
+                    {
+                         //pohodi
+                        cellsToPieces2 = cellsToPieces;
+                        cellsToPieces2.detach();
+                        cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                        cellsToPieces2.remove(previousClickedCell);
+                        if (!shah(cellsToPieces2, turn))
+                        {
                             qDebug() << 7 << Qt::endl;
+                            static_cast<Pawn*>(cellsToPieces[previousClickedCell])->hasMoved = true;
                             cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
                             cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
                             cellsToPieces.remove(previousClickedCell);
                             turn = !turn;
-                            }
-                        }
                         }
                     }
                 }
+            }
+        }
         else if (cellsToPieces.contains(clickedCell) && cellsToPieces[clickedCell]->name  == "King" && cellsToPieces[previousClickedCell]->name  == "Rook")
+        {
+            if ((static_cast<Rook*>(cellsToPieces[clickedCell]) -> FirstMoveRook == false) && (static_cast<King*>(cellsToPieces[clickedCell]) ->FirstMoveKing == false))
+            {
+                if (turn == cellsToPieces[previousClickedCell]->color && turn == cellsToPieces[clickedCell]->color)
                 {
-                      if ( (static_cast<Rook*>(cellsToPieces[clickedCell]) -> FirstMoveRook == false) && (static_cast<King*>(cellsToPieces[clickedCell]) ->FirstMoveKing == false))
+                     if (previousClickedCell->column == 0 && previousClickedCell->row == 7)
+                     {
+                          //pohodi
+                         cellsToPieces2 = cellsToPieces;
+                         cellsToPieces2.detach();
+                         cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                         cellsToPieces2.remove(previousClickedCell);
+                         if (!shah(cellsToPieces2, turn))
+                         {
+                             qDebug() << 6 << Qt::endl;
+                             cellsToPieces[previousClickedCell]->setPos((&cells[3][7])->pos());
+                             cellsToPieces.insert(&cells[3][7], cellsToPieces[previousClickedCell]);
+                             cellsToPieces[clickedCell]->setPos((&cells[2][7])->pos());
+                             cellsToPieces.insert(&cells[2][7], cellsToPieces[clickedCell]);
+                             cellsToPieces.remove(previousClickedCell);
+                             cellsToPieces.remove(clickedCell);
+                             turn = !turn;
+                         }
+                      }
+
+                      else if (previousClickedCell->column == 7 && previousClickedCell->row == 7)
                       {
-                          if (turn == cellsToPieces[previousClickedCell]->color && turn == cellsToPieces[clickedCell]->color)
-                          {
-                               if (previousClickedCell->column == 0 && previousClickedCell->row == 7)
-                               {
-                                    //pohodi
-                                   cellsToPieces2 = cellsToPieces;
-                                   cellsToPieces2.detach();
-                                   cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                                   cellsToPieces2.remove(previousClickedCell);
-                                   if (!shah(cellsToPieces2, turn)) {
-                                       qDebug() << 6 << Qt::endl;
-                                   cellsToPieces[previousClickedCell]->setPos((&cells[3][7])->pos());
-                                   cellsToPieces.insert(&cells[3][7], cellsToPieces[previousClickedCell]);
-                                   cellsToPieces[clickedCell]->setPos((&cells[2][7])->pos());
-                                   cellsToPieces.insert(&cells[2][7], cellsToPieces[clickedCell]);
-                                   cellsToPieces.remove(previousClickedCell);
-                                   cellsToPieces.remove(clickedCell);
-                                   turn = !turn;
-                                   }
-                                }
+                          //pohodi
+                         cellsToPieces2 = cellsToPieces;
+                         cellsToPieces2.detach();
+                         cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                         cellsToPieces2.remove(previousClickedCell);
+                         if (!shah(cellsToPieces2, turn))
+                         {
+                             qDebug() << 5 << Qt::endl;
+                             cellsToPieces[previousClickedCell]->setPos((&cells[5][7])->pos());
+                             cellsToPieces[clickedCell]->setPos((&cells[6][7])->pos());
+                             cellsToPieces.insert(&cells[6][7], cellsToPieces[clickedCell]);
+                             cellsToPieces.insert(&cells[5][7], cellsToPieces[previousClickedCell]);
+                             cellsToPieces.remove(previousClickedCell);
+                             cellsToPieces.remove(clickedCell);
+                             turn = !turn;
+                         }
+                      }
 
-                                else if (previousClickedCell->column == 7 && previousClickedCell->row == 7)
-                                {
-                                    //pohodi
-                                   cellsToPieces2 = cellsToPieces;
-                                   cellsToPieces2.detach();
-                                   cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                                   cellsToPieces2.remove(previousClickedCell);
-                                   if (!shah(cellsToPieces2, turn)) {
-                                       qDebug() << 5 << Qt::endl;
-                                   cellsToPieces[previousClickedCell]->setPos((&cells[5][7])->pos());
-                                   cellsToPieces[clickedCell]->setPos((&cells[6][7])->pos());
-                                   cellsToPieces.insert(&cells[6][7], cellsToPieces[clickedCell]);
-                                   cellsToPieces.insert(&cells[5][7], cellsToPieces[previousClickedCell]);
-                                   cellsToPieces.remove(previousClickedCell);
-                                   cellsToPieces.remove(clickedCell);
-                                   turn = !turn;
-                                   }
-                                }
-
-                              else if (previousClickedCell->column == 0 && previousClickedCell->row == 0)
-                              {
-                                  //pohodi
-                                   cellsToPieces2 = cellsToPieces;
-                                   cellsToPieces2.detach();
-                                  cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                                  cellsToPieces2.remove(previousClickedCell);
-                                  if (!shah(cellsToPieces2, turn)) {
-                                  qDebug() << 4 << Qt::endl;
-                                  cellsToPieces[previousClickedCell]->setPos((&cells[3][0])->pos());
-                                  cellsToPieces[clickedCell]->setPos((&cells[2][0])->pos());
-                                  cellsToPieces.insert(&cells[2][0], cellsToPieces[clickedCell]);
-                                  cellsToPieces.insert(&cells[3][0], cellsToPieces[previousClickedCell]);
-                                  cellsToPieces.remove(previousClickedCell);
-                                  cellsToPieces.remove(clickedCell);
-                                  turn = !turn;
-                                  }
-                               }
-
-                               else if (previousClickedCell->column == 7 && previousClickedCell->row == 0)
-                               {
-                                  //pohodi
-                                   cellsToPieces2 = cellsToPieces;
-                                   cellsToPieces2.detach();
-                                  cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                                  cellsToPieces2.remove(previousClickedCell);
-                                  if (!shah(cellsToPieces2, turn)) {
-                                      qDebug() << 3 << Qt::endl;
-                                  cellsToPieces[previousClickedCell]->setPos((&cells[5][0])->pos());
-                                  cellsToPieces[clickedCell]->setPos((&cells[6][0])->pos());
-                                  cellsToPieces.insert(&cells[6][0], cellsToPieces[clickedCell]);
-                                  cellsToPieces.insert(&cells[5][0], cellsToPieces[previousClickedCell]);
-                                  cellsToPieces.remove(previousClickedCell);
-                                  cellsToPieces.remove(clickedCell);
-                                  turn = !turn;
-                                  }
-                               }
-                            }
+                    else if (previousClickedCell->column == 0 && previousClickedCell->row == 0)
+                    {
+                        //pohodi
+                         cellsToPieces2 = cellsToPieces;
+                         cellsToPieces2.detach();
+                        cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                        cellsToPieces2.remove(previousClickedCell);
+                        if (!shah(cellsToPieces2, turn))
+                        {
+                            qDebug() << 4 << Qt::endl;
+                            cellsToPieces[previousClickedCell]->setPos((&cells[3][0])->pos());
+                            cellsToPieces[clickedCell]->setPos((&cells[2][0])->pos());
+                            cellsToPieces.insert(&cells[2][0], cellsToPieces[clickedCell]);
+                            cellsToPieces.insert(&cells[3][0], cellsToPieces[previousClickedCell]);
+                            cellsToPieces.remove(previousClickedCell);
+                            cellsToPieces.remove(clickedCell);
+                            turn = !turn;
                         }
-                }
-        else {
+                     }
+
+                     else if (previousClickedCell->column == 7 && previousClickedCell->row == 0)
+                     {
+                        //pohodi
+                         cellsToPieces2 = cellsToPieces;
+                         cellsToPieces2.detach();
+                        cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                        cellsToPieces2.remove(previousClickedCell);
+                        if (!shah(cellsToPieces2, turn))
+                        {
+                            qDebug() << 3 << Qt::endl;
+                            cellsToPieces[previousClickedCell]->setPos((&cells[5][0])->pos());
+                            cellsToPieces[clickedCell]->setPos((&cells[6][0])->pos());
+                            cellsToPieces.insert(&cells[6][0], cellsToPieces[clickedCell]);
+                            cellsToPieces.insert(&cells[5][0], cellsToPieces[previousClickedCell]);
+                            cellsToPieces.remove(previousClickedCell);
+                            cellsToPieces.remove(clickedCell);
+                            turn = !turn;
+                        }
+                     }
+                  }
+              }
+        }
+        else
+        {
             if (cellsToPieces[previousClickedCell]->figureCanMove(previousClickedCell, clickedCell) &&
-                    wayIsFree(previousClickedCell, clickedCell)) {
-                if (cellsToPieces.contains(clickedCell)) {
-                    if (cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color)  {
+                    wayIsFree(previousClickedCell, clickedCell))
+            {
+                if (cellsToPieces.contains(clickedCell))
+                {
+                    if (cellsToPieces[previousClickedCell]->color != cellsToPieces[clickedCell]->color)
+                    {
 
                      //pohodi
                         cellsToPieces2 = cellsToPieces;
                         cellsToPieces2.detach();
                         cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
                         cellsToPieces2.remove(previousClickedCell);
-                        if (!shah(cellsToPieces2, turn)) {
+                        if (!shah(cellsToPieces2, turn))
+                        {
                             qDebug() << 1 << Qt::endl;
-                        cellsToPieces[clickedCell]->setPixmap(QPixmap());
-                        cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
-                        cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                        cellsToPieces.remove(previousClickedCell);
-                        turn = !turn;
+                            cellsToPieces[clickedCell]->setPixmap(QPixmap());
+                            cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+                            cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                            cellsToPieces.remove(previousClickedCell);
+                            turn = !turn;
                         }
                     }
                 }
-                else {
+                else
+                {
                     //pohodi
                     cellsToPieces2 = cellsToPieces;
                     cellsToPieces2.detach();
                     cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
                     cellsToPieces2.remove(previousClickedCell);
-                    if (!shah(cellsToPieces2, turn)) {
+                    if (!shah(cellsToPieces2, turn))
+                    {
                         qDebug() << 2 << Qt::endl;
-                    cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
-                    cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                    cellsToPieces.remove(previousClickedCell);
-                    turn = !turn;
+                        cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
+                        cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                        cellsToPieces.remove(previousClickedCell);
+                        turn = !turn;
                     }
                 }
             }
@@ -439,6 +468,10 @@ void Board::move()
 bool Board::wayIsFree(Cell * start, Cell * end) {
     QVector<Cell*> temp;
 
+    if (cellsToPieces[start]->name == "Knight") {
+        return true;
+    }
+
     if (start->column == end->column)
     {
         for (int i = qMin(start->row, end->row) + 1; i < qMax(start->row, end->row); ++i)
@@ -461,16 +494,16 @@ bool Board::wayIsFree(Cell * start, Cell * end) {
                for (int i = 1; i < start->column - end->column; ++i)
                {
                    temp.push_back(&cells[start->column - i][start->row - i]);
-                   //qDebug() << "1111111111      "<<start->column - i << " - " << start->row - i << Qt::endl;
-                   //qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
+                   qDebug() << "1111111111      "<<start->column - i << " - " << start->row - i << Qt::endl;
+                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
                }
            }
            else if (start->row < end->row){
                for (int i = 1; i < start->column - end->column; ++i)
                {
                    temp.push_back(&cells[end->column + i][end->row - i]);
-//                   qDebug() <<  "22222222222      "<<end->column + i << " - " << end->row - i << Qt::endl;
-//                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
+                   qDebug() <<  "22222222222      "<<end->column + i << " - " << end->row - i << Qt::endl;
+                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
                }
            }
        }
@@ -479,16 +512,16 @@ bool Board::wayIsFree(Cell * start, Cell * end) {
                for (int i = 1; i < end->column - start->column; ++i)
                {
                    temp.push_back(&cells[start->column + i][start->row - i]);
-//                   qDebug() <<  "33333333333      "<<start->column + i << " - " << start->row - i << Qt::endl;
-//                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
+                   qDebug() <<  "33333333333      "<<start->column + i << " - " << start->row - i << Qt::endl;
+                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
                }
            }
            else {
                for (int i = 1; i < end->column - start->column; ++i)
                {
                    temp.push_back(&cells[start->column + i][start->row - i]);
-//                   qDebug() <<  "4444444444444     "<<start->column + i << " - " << start->row + i << Qt::endl;
-//                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
+                   qDebug() <<  "4444444444444     "<<start->column + i << " - " << start->row + i << Qt::endl;
+                   qDebug() << start->column << " - " << start->row  << "     " << end->column << " - " << end->row << Qt::endl;
                }
            }
        }
@@ -588,10 +621,14 @@ int Board::countSum(bool color) {
 QVector<Move> Board::getPossibleMoves(bool color) {
     QVector<Move> result;
     qDebug() << "new" << Qt::endl;
-    for (auto it = cellsToPieces.begin(); it != cellsToPieces.end(); it++) {
-        if (it.value()->color == color) {
-            for (int i = 0; i < 8; ++i) {
-                for (int j = 0; j < 8; ++j) {
+    for (auto it = cellsToPieces.begin(); it != cellsToPieces.end(); it++)
+    {
+        if (it.value()->color == color)
+        {
+            for (int i = 0; i < 8; ++i)
+            {
+                for (int j = 0; j < 8; ++j)
+                {
                     qDebug() << 1;
                     cellsToPieces2 = cellsToPieces;
                     cellsToPieces2.detach();
@@ -600,10 +637,10 @@ QVector<Move> Board::getPossibleMoves(bool color) {
                     qDebug() << 3;
                     cellsToPieces2.remove(it.key());
                     qDebug() << 4;
-                    if (cellsToPieces[it.key()]->figureCanMove(it.key(), &cells[i][j]) &&
-                            (typeid(cellsToPieces[it.key()]).name() != "Knight"  && wayIsFree(it.key(), &cells[i][j])) &&
+                    if (cellsToPieces[it.key()]->figureCanMove(it.key(), &cells[i][j]) && wayIsFree2(it.key(), &cells[i][j]) &&
                             ((cellsToPieces.contains(&cells[i][j]) && cellsToPieces[it.key()]->color != cellsToPieces[&cells[i][j]]->color) || !cellsToPieces.contains(&cells[i][j]))
-                            && !shah(cellsToPieces2, turn)) {
+                            && !shah(cellsToPieces2, turn))
+                    {
                         result.push_back({it.key(), &cells[i][j]});
                         qDebug() << it.key()->row << " " << it.key()->column << " - " << (&cells[i][j])->row << " " << (&cells[i][j])->column << Qt::endl;
                     }
