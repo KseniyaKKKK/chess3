@@ -17,36 +17,38 @@ class Board :  public QGraphicsScene
 {
     Q_OBJECT
     Cell cells[8][8];
+    Cell* pawnToReplace;
     QMap<Cell*, ChessPiece *> cellsToPieces;
     QMap<Cell*, ChessPiece *> cellsToPieces2;
-    bool turn = true;
-    bool shah(QMap<Cell*, ChessPiece *> t,bool color);
-    std::pair<Cell *, bool> pawnAtEnd(bool color);
-    void replacePawn();
     QPushButton *b1 = new QPushButton("Ферзь");
     QPushButton *b2 = new QPushButton("Ладья");
     QPushButton *b3 = new QPushButton("Конь");
     QPushButton *b4 = new QPushButton("Слон");
     QPushButton *n = new QPushButton("Шах");
-virtual void mousePressEvent(QGraphicsSceneMouseEvent *) override;
+    std::pair<Cell *, bool> pawnAtEnd(bool color);
+    bool turn = true;
+    bool compColor = false;
+
     bool wayIsFree(Cell * start, Cell * end);
     bool wayIsFree2(Cell * start, Cell * end);
-    bool compColor = false;
-    Cell* pawnToReplace;
+    bool shah(QMap<Cell*, ChessPiece *> t,bool color);
+    void replacePawn();
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *) override;
+
 public:
     Board();
     Cell * clickedCell;
     Cell * previousClickedCell;
     bool mouseWasPressed;
+    bool two = false;
+    bool withComp = true;
     void drawCells();
     void addFigures();
     int sumW;
     int sumB;
-    bool two = false;
-    int countSum(bool color);
     QVector<Move> possibleMoves;
     QVector<Move> getPossibleMoves(bool color);
-    bool withComp = true;
+    int countSum(QMap<Cell*, ChessPiece *> pieces, bool color);
 public slots:
     void move();
     void setBlackCompColor();

@@ -53,8 +53,8 @@ public slots:
     }
 public:
     Menu(QGraphicsView * view) {
-        b1 = new QPushButton("White", view);
-        b2 = new QPushButton("Black", view);
+        b1 = new QPushButton("Белые", view);
+        b2 = new QPushButton("Черные", view);
         b3 = new QPushButton("1 vs 1", view);
         b4 = new QPushButton("Шах", view);
         b5 = new QPushButton("Мат", view);

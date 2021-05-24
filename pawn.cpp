@@ -12,11 +12,12 @@ Pawn::Pawn(int x, int y, bool color) : ChessPiece(x, y, color)
     weight = 1;
     name = "Pawn";
     hasMoved = false;
+    pered = false;
 }
 
 bool Pawn::figureCanMove(const Cell *start, const Cell *end)
 {
-    if ((start->column == end->column))
+    if ((start->column == end->column && !pered))
     {
         if (!this->color &&  (end->row - start->row == 1 || (end->row - start->row == 2 && !hasMoved))) {
             if (end->row - start->row == 2)

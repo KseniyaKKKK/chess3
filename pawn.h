@@ -16,6 +16,7 @@ public:
     int TWO = 1;
 
     bool forpawn = false;
+    bool pered = false;
     bool taking_on_the_aisle = false;
 };
 
