@@ -342,7 +342,8 @@ void Board::move()
                 if (turn == cellsToPieces[previousClickedCell]->color && turn == cellsToPieces[clickedCell]->color)
                 {
                      qDebug() << 2 << Qt::endl;
-                     if (previousClickedCell->column == 0 && previousClickedCell->row == 7)
+                     if (previousClickedCell->column == 0 && previousClickedCell->row == 7 &&
+                             !cellsToPieces.contains(&cells[1][7]) && !cellsToPieces.contains(&cells[2][7]) && !cellsToPieces.contains(&cells[3][7]))
                      {
                           qDebug() << 3 << Qt::endl;
                           //pohodi
@@ -362,7 +363,8 @@ void Board::move()
                         }
                       }
 
-                      else if (previousClickedCell->column == 7 && previousClickedCell->row == 7)
+                      else if (previousClickedCell->column == 7 && previousClickedCell->row == 7 &&
+                               !cellsToPieces.contains(&cells[6][7]) && !cellsToPieces.contains(&cells[5][7]))
                       {
                           //pohodi
                          cellsToPieces2 = cellsToPieces;
@@ -381,7 +383,8 @@ void Board::move()
                         }
                       }
 
-                    else if (previousClickedCell->column == 0 && previousClickedCell->row == 0)
+                    else if (previousClickedCell->column == 0 && previousClickedCell->row == 0 &&
+                             !cellsToPieces.contains(&cells[1][0]) && !cellsToPieces.contains(&cells[2][0]) && !cellsToPieces.contains(&cells[3][0]))
                     {
                         //pohodi
                          cellsToPieces2 = cellsToPieces;
@@ -400,7 +403,8 @@ void Board::move()
                        }
                      }
 
-                     else if (previousClickedCell->column == 7 && previousClickedCell->row == 0)
+                     else if (previousClickedCell->column == 7 && previousClickedCell->row == 0 &&
+                              !cellsToPieces.contains(&cells[6][0]) && !cellsToPieces.contains(&cells[5][0]))
                      {
                         //pohodi
                          cellsToPieces2 = cellsToPieces;
