@@ -222,7 +222,8 @@ void Board::move()
                 if (cellsToPieces.contains(&cells[previousClickedCell->column + 1][previousClickedCell->row]) ||
                     cellsToPieces.contains(&cells[previousClickedCell->column - 1][previousClickedCell->row]))
                 {
-                    if  ((cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->name == "Pawn") &&
+                    if  (cellsToPieces.contains(&cells[previousClickedCell->column + 1][previousClickedCell->row]) &&
+                         (cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->name == "Pawn") &&
                           (cellsToPieces[previousClickedCell]->color != cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->color))
                     {
                         static_cast<Pawn*>(cellsToPieces[previousClickedCell])-> taking_on_the_aisle = true;
@@ -257,7 +258,8 @@ void Board::move()
                             }
                         }
                     }
-                    else if ((cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]]->name == "Pawn") &&
+                    else if (cellsToPieces.contains(&cells[previousClickedCell->column - 1][previousClickedCell->row]) &&
+                             (cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]]->name == "Pawn") &&
                               (cellsToPieces[previousClickedCell]->color != cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]]->color))
                     {
                         static_cast<Pawn*>(cellsToPieces[previousClickedCell])-> taking_on_the_aisle = true;
