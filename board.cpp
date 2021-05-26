@@ -263,9 +263,8 @@ void Board::move()
                               (cellsToPieces[previousClickedCell]->color != cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]]->color))
                     {
                         static_cast<Pawn*>(cellsToPieces[previousClickedCell])-> taking_on_the_aisle = true;
-
                         if ((static_cast<Pawn*>(cellsToPieces[previousClickedCell])->P(previousClickedCell, clickedCell, two))
-                                && wayIsFree(previousClickedCell, clickedCell))
+                               ) //&& wayIsFree(previousClickedCell, clickedCell))
                         {
                              //pohodi
                             cellsToPieces2 = cellsToPieces;

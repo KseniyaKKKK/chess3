@@ -13,7 +13,7 @@ public:
     bool P(const Cell * start, const Cell * end, bool);
 
     bool hasMoved = false;
-    int TWO = 1;
+    int TWO = 2;
 
     bool forpawn = false;
     bool pered = false;
