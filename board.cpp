@@ -659,7 +659,8 @@ QVector<Move> Board::getPossibleMoves(bool color) {
                             ((cellsToPieces.contains(&cells[i][j]) && cellsToPieces[it.key()]->color != cellsToPieces[&cells[i][j]]->color) || !cellsToPieces.contains(&cells[i][j]))
                             && !shah(cellsToPieces2, color))
                     {
-                        result.push_back({it.key(), &cells[i][j], countSum(cellsToPieces, !color) - countSum(cellsToPieces2, !color)});
+                        int difference  = countSum(cellsToPieces, !color) - countSum(cellsToPieces2, !color);
+                        result.push_back({it.key(), &cells[i][j], (int)difference});
                     }
                 }
             }
@@ -741,13 +742,21 @@ bool Board::shah(QMap<Cell*, ChessPiece *> pieces, bool color) {
 
     for (auto it = pieces.begin(); it != pieces.end(); ++it) {
         if (it.value()->color != color) {
-            if (cellsToPieces[it.key()]->name == "Pawn") {
+            if (pieces[it.key()]->name == "Pawn") {
                 if (abs(it.key()->column - kingCell->column) == abs(it.key()->row - kingCell->row) )
                 {
-                    if (cellsToPieces.contains(clickedCell))
-                        static_cast<Pawn*>(cellsToPieces[it.key()])->forpawn = true;
+                    if (pieces.contains(clickedCell))
+                        static_cast<Pawn*>(pieces[it.key()])->forpawn = true;
                     else
-                        static_cast<Pawn*>(cellsToPieces[it.key()])->forpawn = false;
+                        static_cast<Pawn*>(pieces[it.key()])->forpawn = false;
+                }
+
+                if (it.key()->column == kingCell->column )
+                {
+                    if (pieces.contains(kingCell))
+                        static_cast<Pawn*>(pieces[it.key()])->pered = true;
+                    else
+                        static_cast<Pawn*>(pieces[it.key()])->pered = false;
                 }
             }
             if (pieces[it.key()]->figureCanMove(it.key(), kingCell) &&
