@@ -222,23 +222,26 @@ void Board::move()
                 if (cellsToPieces.contains(&cells[previousClickedCell->column + 1][previousClickedCell->row]) ||
                     cellsToPieces.contains(&cells[previousClickedCell->column - 1][previousClickedCell->row]))
                 {
+
+                    //// а сюда я вставила
+                    two = false;
+                    if (clickedCell->column == (previousClickedCell->column + 1))
+                    {
+                         if (static_cast<Pawn*>(cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]])-> TWO == 2)
+                             two = true;
+                    }
+                    else if (clickedCell->column == (previousClickedCell->column - 1))
+                    {
+                         if (static_cast<Pawn*>(cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]])-> TWO == 2)
+                             two = true;
+                    }
+///
                     if  (cellsToPieces.contains(&cells[previousClickedCell->column + 1][previousClickedCell->row]) &&
                          (cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->name == "Pawn") &&
                           (cellsToPieces[previousClickedCell]->color != cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->color))
                     {
                         static_cast<Pawn*>(cellsToPieces[previousClickedCell])-> taking_on_the_aisle = true;
-                        two =false;
-
-                        if (clickedCell->column == (previousClickedCell->column + 1))
-                        {
-                             if (static_cast<Pawn*>(cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]])-> TWO == 2)
-                                 two = true;
-                        }
-                        else if (clickedCell->column == (previousClickedCell->column - 1))
-                        {
-                             if (static_cast<Pawn*>(cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]])-> TWO == 2)
-                                 two = true;
-                        }
+                        /// здесь это было
                         if ((static_cast<Pawn*>(cellsToPieces[previousClickedCell])->P(previousClickedCell, clickedCell, two))
                                 && wayIsFree(previousClickedCell, clickedCell))
                         {
@@ -274,7 +277,7 @@ void Board::move()
                             if (!shah(cellsToPieces2, turn))
                             {
                                 static_cast<Pawn*>(cellsToPieces[previousClickedCell])->hasMoved = true;
-                                cellsToPieces[&cells[previousClickedCell->column + 1][previousClickedCell->row]]->setPixmap(QPixmap());
+                                cellsToPieces[&cells[previousClickedCell->column - 1][previousClickedCell->row]]->setPixmap(QPixmap());
                                 cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
                                 cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
                                 cellsToPieces.remove(previousClickedCell);
