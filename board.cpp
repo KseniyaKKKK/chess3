@@ -334,12 +334,16 @@ void Board::move()
         }
         else if (cellsToPieces.contains(clickedCell) && cellsToPieces[clickedCell]->name  == "King" && cellsToPieces[previousClickedCell]->name  == "Rook")
         {
-            if ((static_cast<Rook*>(cellsToPieces[clickedCell]) -> FirstMoveRook == false) && (static_cast<King*>(cellsToPieces[clickedCell]) ->FirstMoveKing == false))
+            qDebug() << 0 << Qt::endl;
+            if ((static_cast<Rook*>(cellsToPieces[previousClickedCell]) -> FirstMoveRook == false) && (static_cast<King*>(cellsToPieces[clickedCell]) ->FirstMoveKing == false))
             {
+                qDebug() << 1 << Qt::endl;
                 if (turn == cellsToPieces[previousClickedCell]->color && turn == cellsToPieces[clickedCell]->color)
                 {
+                     qDebug() << 2 << Qt::endl;
                      if (previousClickedCell->column == 0 && previousClickedCell->row == 7)
                      {
+                          qDebug() << 3 << Qt::endl;
                           //pohodi
                          cellsToPieces2 = cellsToPieces;
                          cellsToPieces2.detach();
@@ -354,7 +358,7 @@ void Board::move()
                              cellsToPieces.remove(previousClickedCell);
                              cellsToPieces.remove(clickedCell);
                              turn = !turn;
-                         }
+                        }
                       }
 
                       else if (previousClickedCell->column == 7 && previousClickedCell->row == 7)
@@ -373,7 +377,7 @@ void Board::move()
                              cellsToPieces.remove(previousClickedCell);
                              cellsToPieces.remove(clickedCell);
                              turn = !turn;
-                         }
+                        }
                       }
 
                     else if (previousClickedCell->column == 0 && previousClickedCell->row == 0)
@@ -392,7 +396,7 @@ void Board::move()
                             cellsToPieces.remove(previousClickedCell);
                             cellsToPieces.remove(clickedCell);
                             turn = !turn;
-                        }
+                       }
                      }
 
                      else if (previousClickedCell->column == 7 && previousClickedCell->row == 0)
@@ -660,6 +664,9 @@ QVector<Move> Board::getPossibleMoves(bool color) {
                             && !shah(cellsToPieces2, color))
                     {
                         int difference  = countSum(cellsToPieces, !color) - countSum(cellsToPieces2, !color);
+                        if (shah(cellsToPieces2, color)) {
+                            difference = 100;
+                        }
                         result.push_back({it.key(), &cells[i][j], (int)difference});
                     }
                 }

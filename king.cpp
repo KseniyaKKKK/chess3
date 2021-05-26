@@ -15,7 +15,6 @@ bool King::figureCanMove(const Cell *start, const Cell *end)
 {
     if (pow(start->column-end->column, 2) + pow(start->row-end->row, 2) <= 2)
     {
-       FirstMoveKing = true;
        return true;
     }
     return false;
