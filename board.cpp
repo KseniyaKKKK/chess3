@@ -326,6 +326,8 @@ void Board::move()
                         cellsToPieces2.remove(previousClickedCell);
                         if (!shah(cellsToPieces2, turn))
                         {
+                            if (abs(clickedCell->row - previousClickedCell->row) == 2){
+                            static_cast<Pawn*>(cellsToPieces[previousClickedCell])->TWO++;}
                             static_cast<Pawn*>(cellsToPieces[previousClickedCell])->hasMoved = true;
                             cellsToPieces[previousClickedCell]->setPos(clickedCell->pos());
                             cellsToPieces.insert(clickedCell, cellsToPieces[previousClickedCell]);
@@ -352,16 +354,21 @@ void Board::move()
                           //pohodi
                          cellsToPieces2 = cellsToPieces;
                          cellsToPieces2.detach();
-                         cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                         cellsToPieces2.insert(&cells[3][7], cellsToPieces[previousClickedCell]);
+                         cellsToPieces2.insert(&cells[2][7], cellsToPieces[clickedCell]);
                          cellsToPieces2.remove(previousClickedCell);
+                         cellsToPieces2.remove(clickedCell);
                          if (!shah(cellsToPieces2, turn))
                          {
                              cellsToPieces[previousClickedCell]->setPos((&cells[3][7])->pos());
                              cellsToPieces.insert(&cells[3][7], cellsToPieces[previousClickedCell]);
                              cellsToPieces[clickedCell]->setPos((&cells[2][7])->pos());
+                             static_cast<Rook*>(cellsToPieces [&cells[0][7]]) -> FirstMoveRook = true;
+                             static_cast<King*>(cellsToPieces[&cells[4][7]]) ->FirstMoveKing = true;
                              cellsToPieces.insert(&cells[2][7], cellsToPieces[clickedCell]);
                              cellsToPieces.remove(previousClickedCell);
                              cellsToPieces.remove(clickedCell);
+
                              turn = !turn;
                         }
                       }
@@ -372,14 +379,18 @@ void Board::move()
                           //pohodi
                          cellsToPieces2 = cellsToPieces;
                          cellsToPieces2.detach();
-                         cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
+                         cellsToPieces2.insert(&cells[5][7], cellsToPieces[previousClickedCell]);
+                         cellsToPieces2.insert(&cells[6][7], cellsToPieces[clickedCell]);
                          cellsToPieces2.remove(previousClickedCell);
+                         cellsToPieces2.remove(clickedCell);
                          if (!shah(cellsToPieces2, turn))
                          {
                              cellsToPieces[previousClickedCell]->setPos((&cells[5][7])->pos());
                              cellsToPieces[clickedCell]->setPos((&cells[6][7])->pos());
                              cellsToPieces.insert(&cells[6][7], cellsToPieces[clickedCell]);
                              cellsToPieces.insert(&cells[5][7], cellsToPieces[previousClickedCell]);
+                             static_cast<Rook*>(cellsToPieces [&cells[7][7]]) -> FirstMoveRook = true;
+                             static_cast<King*>(cellsToPieces[&cells[4][7]]) ->FirstMoveKing = true;
                              cellsToPieces.remove(previousClickedCell);
                              cellsToPieces.remove(clickedCell);
                              turn = !turn;
@@ -392,14 +403,18 @@ void Board::move()
                         //pohodi
                          cellsToPieces2 = cellsToPieces;
                          cellsToPieces2.detach();
-                        cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                        cellsToPieces2.remove(previousClickedCell);
+                         cellsToPieces2.insert(&cells[3][0], cellsToPieces[previousClickedCell]);
+                         cellsToPieces2.insert(&cells[2][0], cellsToPieces[clickedCell]);
+                         cellsToPieces2.remove(previousClickedCell);
+                         cellsToPieces2.remove(clickedCell);
                         if (!shah(cellsToPieces2, turn))
                         {
                             cellsToPieces[previousClickedCell]->setPos((&cells[3][0])->pos());
                             cellsToPieces[clickedCell]->setPos((&cells[2][0])->pos());
                             cellsToPieces.insert(&cells[2][0], cellsToPieces[clickedCell]);
                             cellsToPieces.insert(&cells[3][0], cellsToPieces[previousClickedCell]);
+                            static_cast<Rook*>(cellsToPieces [&cells[0][0]]) -> FirstMoveRook = true;
+                            static_cast<King*>(cellsToPieces[&cells[4][0]]) -> FirstMoveKing = true;
                             cellsToPieces.remove(previousClickedCell);
                             cellsToPieces.remove(clickedCell);
                             turn = !turn;
@@ -412,14 +427,18 @@ void Board::move()
                         //pohodi
                          cellsToPieces2 = cellsToPieces;
                          cellsToPieces2.detach();
-                        cellsToPieces2.insert(clickedCell, cellsToPieces[previousClickedCell]);
-                        cellsToPieces2.remove(previousClickedCell);
+                         cellsToPieces2.insert(&cells[5][0], cellsToPieces[previousClickedCell]);
+                         cellsToPieces2.insert(&cells[6][0], cellsToPieces[clickedCell]);
+                         cellsToPieces2.remove(previousClickedCell);
+                         cellsToPieces2.remove(clickedCell);
                         if (!shah(cellsToPieces2, turn))
                         {
                             cellsToPieces[previousClickedCell]->setPos((&cells[5][0])->pos());
                             cellsToPieces[clickedCell]->setPos((&cells[6][0])->pos());
                             cellsToPieces.insert(&cells[6][0], cellsToPieces[clickedCell]);
                             cellsToPieces.insert(&cells[5][0], cellsToPieces[previousClickedCell]);
+                            static_cast<Rook*>(cellsToPieces [&cells[7][0]]) -> FirstMoveRook = true;
+                            static_cast<King*>(cellsToPieces[&cells[4][0]]) -> FirstMoveKing = true;
                             cellsToPieces.remove(previousClickedCell);
                             cellsToPieces.remove(clickedCell);
                             turn = !turn;
